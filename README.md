@@ -26,20 +26,20 @@ access them. Assuming that your Web server uses the /var/www/html directory as i
 root, you might want to create /var/www/apps as the root for your Web apps.  Create the directory
 and set permissions so you can put things there.
 ```
-% **sudo su**
+% sudo su
 [sudo] password for liming: 
-# **cd /var/www**
-# **mkdir apps**
-# **chown liming:liming apps**
-# **exit**
+# cd /var/www
+# mkdir apps
+# chown liming:liming apps
+# exit
 ```
 Now clone the git repository in the new directory to make a local copy of everything.
 ```
-% **cd /var/www/apps**
-% **git clone http://github.com/lliming/globus-id-explorer.git**
+% cd /var/www/apps
+% git clone http://github.com/lliming/globus-id-explorer.git
 [git does its thing]
-% **cd globus-id-explorer**
-% **ls**
+% cd globus-id-explorer
+% ls
 auth_example.conf  auth_example.py  auth_example.wsgi  flask_example.py  flask_example.wsgi  hello.wsgi  requirements.txt
 % 
 ```
@@ -47,11 +47,11 @@ This will create a subdirectory called globus-id-explorer with the files in it.
 
 Next, create a Python virtual environment and install the required Python packages in it.
 ```
-% **virtualenv -p python3 venv**
+% virtualenv -p python3 venv
 [virtualenv does its thing]
-% **source venv/bin/activate**
-(venv) % **pip install -r requirements.txt**
+% source venv/bin/activate
+(venv) % pip install -r requirements.txt
 [pip does its thing]
-(venv) % **deactivate**
+(venv) % deactivate
 % 
 ```
