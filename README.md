@@ -55,3 +55,16 @@ Next, create a Python virtual environment and install the required Python packag
 (venv) % deactivate
 % 
 ```
+Now, edit the ``globus-id-explorer.wsgi`` file and change the path in the sys.path.insert line 
+so that it matches the path to your app directory. (If you installed your app in ``/var/www/apps/globus-id-explorer``
+as shown above, the path is already set properly and you won't need to change it.)
+
+Next, edit the ``auth.conf`` file. This is an Apache configuration snippet that tells the Apache
+Web server how to find your app. The path to the app directory appears on two lines, and you'll
+need to adjust both to match your installation (if it isn't /var/www/apps). On the first line
+of the file, make sure the path is correct, up to and including the venv subdirectory that you
+created above.  On the line beginning with ``WSGIScriptAlias``, make sure the path is correct,
+up to and including the globus-id-explorer.wsgi file. Finally, inside the Directory directive,
+make sure that the path is correct up to and including the apps directory *above* your installation
+directory. (Don't include the globus-id-explorer directory name.)
+line and 
