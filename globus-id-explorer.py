@@ -34,7 +34,7 @@ def index():
     ac = globus_sdk.AuthClient(authorizer=globus_sdk.AccessTokenAuthorizer(auth_token))
 
     # use Auth API to get more info about the authenticated user
-    myids = ac.get_identities(ids=str(session.get('username'))).data
+    myids = ac.get_identities(ids=str(session.get('username')),include="identity_provider").data
 
     # use Auth API to get the standard OIDC userinfo fields (like any OIDC client)
     oidcinfo = ac.oauth2_userinfo()
@@ -47,7 +47,8 @@ def index():
     ir = cc.oauth2_token_introspect(auth_token,include='identities_set').data
 
     # display all this information on the web page
-    page = '<html><body>\n<p>' + str(session.get('realname')) + ', you are logged in.</p>\n\n'
+    page = '<html>\n<head><title>Display Your Auth Data</title></head>\n\n'
+    page = page + '<body>\n<p>' + str(session.get('realname')) + ', you are logged in.</p>\n\n'
     page = page + '<p>Your local username is: ' + str(session.get('username')) + '</p>\n\n'
     page = page + '<p><a href="'+logout_uri+'">Logout now.</a></p>\n\n'
     page = page + '<p>OIDC UserInfo says your effective ID is ' + oidcinfo["sub"]
@@ -57,7 +58,8 @@ def index():
     page = page + '<p>Your OIDC identity is:</p>\n<pre>' + json.dumps(myoidc,indent=3) + '</pre>\n\n'
     page = page + '<p>Your Globus Auth identity is:</p>\n<pre>' + json.dumps(myids,indent=3) + '</pre>\n\n'
     page = page + '<p>Introspecting your Auth API access token tells me:</p>\n<pre>' + json.dumps(ir,indent=3) + '</pre>\n\n'
-    page = page + '<p>The tokens I received are:</p>\n<pre>' + json.dumps(session.get('tokens'),indent=3) + '</pre>\n\n'
+    # We probably shouldn't display the token, but for debugging purposes, here's how you'd do it...
+    # page = page + '<p>The tokens I received are:</p>\n<pre>' + json.dumps(session.get('tokens'),indent=3) + '</pre>\n\n'
     page = page + '</body></html>'
     return(page)
 
