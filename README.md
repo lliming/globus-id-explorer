@@ -40,7 +40,7 @@ Now clone the git repository in the new directory to make a local copy of everyt
 [git does its thing]
 % cd globus-id-explorer
 % ls
-auth_example.conf  auth_example.py  auth_example.wsgi  flask_example.py  flask_example.wsgi  hello.wsgi  requirements.txt
+globus-id-explorer.conf  globus-id-explorer.py  globus-id-explorer.wsgi  requirements.txt
 % 
 ```
 This will create a subdirectory called ``globus-id-explorer`` with the files in it.
@@ -61,12 +61,12 @@ as shown above, the path is already set properly and you won't need to change it
 
 Next, edit the ``auth.conf`` file. This is an Apache configuration snippet that tells the Apache
 Web server how to find your app. The path to the app directory appears on three lines, and you'll
-need to adjust each to match your installation (if it isn't /var/www/apps). On the first line
+need to adjust each to match your installation (if it isn't ``/var/www/apps``). On the first line
 of the file, make sure the path is correct, up to and including the venv subdirectory that you
 created above.  On the line beginning with ``WSGIScriptAlias``, make sure the path is correct,
-up to and including the globus-id-explorer.wsgi file. Finally, inside the Directory directive,
+up to and including the ``globus-id-explorer.wsgi`` file. Finally, inside the ``Directory`` directive,
 make sure that the path is correct up to and including the apps directory *above* your installation
-directory. (Don't include the globus-id-explorer directory name.)
+directory. (Don't include the ``globus-id-explorer`` directory name.)
 
 After you've edited ``auth.conf``, you'll need to add it to your Web server configuration and
 restart the Web server. On my system (Fedora with Apache installed), I can do it as follows.
