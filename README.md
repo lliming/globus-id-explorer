@@ -40,7 +40,7 @@ Now clone the git repository in the new directory to make a local copy of everyt
 [git does its thing]
 % cd globus-id-explorer
 % ls
-globus-id-explorer.conf  globus-id-explorer.py  globus-id-explorer.wsgi  requirements.txt
+auth.conf  globus-id-explorer.conf  globus-id-explorer.py  globus-id-explorer.wsgi  requirements.txt
 % 
 ```
 This will create a subdirectory called ``globus-id-explorer`` with the files in it.
