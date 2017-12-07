@@ -43,7 +43,7 @@ Now clone the git repository in the new directory to make a local copy of everyt
 auth_example.conf  auth_example.py  auth_example.wsgi  flask_example.py  flask_example.wsgi  hello.wsgi  requirements.txt
 % 
 ```
-This will create a subdirectory called globus-id-explorer with the files in it.
+This will create a subdirectory called ``globus-id-explorer`` with the files in it.
 
 Next, create a Python virtual environment and install the required Python packages in it.
 ```
@@ -75,7 +75,7 @@ restart the Web server. On my system (Fedora with Apache installed), I can do it
 % sudo systemctl restart httpd
 ```
 There's one more configuration piece that needs to be performed before you can use the app.
-But in order to do it, you'll need to first register the app with Globus.
+But in order to do it, you'll first need to register the app with Globus.
 
 ## Register with Globus
 All OIDC/OAuth2 apps must be registered with their authentication service. To register your
@@ -101,23 +101,29 @@ On my server, it looks like this:
 https://home.leeandkristin.net/auth/login
 ```
 You can leave the rest of the app registration form blank, or mess around with different
-values if you feel adventurous.
+values if you feel adventurous. However, **do not** check the box next to "Native App."
+This is a Confidential app, not a Native app, and setting this incorrectly won't allow
+you to get the information you need to finish configuring the app.
 
 When you click "Create App," you'll see your app's registration data. This is where you'll
 get the data you need to complete configuring your app.
 
 ## Complete app configuration
 
-Now that your app is registered with Globus, edit the ``globus-id-explorer.conf`` file.
-First, change the ``SERVER_NAME=`` value to your Web server's HTTPS address, plus
-``/auth`` on the end. E.g., ``https://home.leeandkristin.net/auth``. (If you don't do
-this, your app won't respond to requests. It's important!) Then, copy and paste the
-Client ID from your Web browser window (showing your app registration) into the line
-beginning with ``APP_CLIENT_ID``.  Finally, in your Web browser, scroll to the bottom
-of your app registration and click ``Generate New Client Secret``. Enter a label for
-the client secret (it can be anything you like), and click ``Generate Secret``. Then
-copy and paste the secret character string into the line beginning with
-``APP_CLIENT_SECRET``.  Save the app's configuration file.
+Now that your app is registered with Globus, return to your installation directory and
+edit the ``globus-id-explorer.conf`` file.
+
+- First, change the ``SERVER_NAME=`` value to your Web server's HTTPS address, plus
+  ``/auth`` on the end. E.g., ``https://home.leeandkristin.net/auth``. (If you don't do
+  this, your app won't respond to requests. It's important!) 
+- Then, copy and paste the
+  Client ID from your Web browser window (showing your app registration) into the line
+  beginning with ``APP_CLIENT_ID``.  
+- Finally, in your Web browser, scroll to the bottom
+  of your app registration and click ``Generate New Client Secret``. Enter a label for
+  the client secret (it can be anything you like), and click ``Generate Secret``. Then
+  copy and paste the secret character string into the line beginning with
+  ``APP_CLIENT_SECRET``.  Save the app's configuration file.
 
 ## Try it out
 Now that your app has been installed and both the app and your Web server are
@@ -127,6 +133,6 @@ and enter the app's address. E.g., ``https://home.leeandkristin.net/auth``.
 Since you logged in to Globus when you registered the app, you probably won't have to
 authenticate again. Instead, you'll jump straight to the "consent" page where you
 tell Globus that it's ok for the app to access your identity information. If you
-agree, then you'll return to the app and it will tell you you're logged in and
+agree, you'll return to the app and it will tell you you're logged in and
 display a bunch of your identity data. If you click "Logout," you can return to the
 app and it will ask you to login using Globus.
