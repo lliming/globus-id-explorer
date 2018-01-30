@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Created on Tue Oct 17 16:44:23 2017
-
-@author: liming
-"""
 
 from flask import Flask, url_for, session, redirect, request
 import globus_sdk
@@ -13,11 +8,7 @@ import json
 app = Flask(__name__)
 app.config.from_pyfile('auth_example.conf')
 
-def load_app_client():
-    return globus_sdk.ConfidentialAppAuthClient(
-        app.config['APP_CLIENT_ID'], app.config['APP_CLIENT_SECRET'])
-
-@app.route("/", methods=['GET'])
+@app.route('/')
 def index():
     """
     This could be any page you like, rendered by Flask.
@@ -25,7 +16,14 @@ def index():
     a simple message.
     """
     if not session.get('is_authenticated'):
-        return redirect(url_for('login'))
+         # display all this information on the web page
+         page = '<html>\n<head><title>Display Your Auth Data</title></head>\n\n'
+         page = page + '<body>\n<p><b>You are not logged in.</b></p>\n\n'
+         page = page + '<p>If you login, this page will show you what the Globus Auth API tells apps about you.</p>\n\n'
+         page = page + '<p><a href="' + url_for('login') + '">Click here to login.</a></p>\n'
+         page = page + '</body></html>'
+         return(page)
+         # return redirect(url_for('login'))
     logout_uri = url_for('logout', _external=True)
 
     # get the stored access token for the Auth API and use it 
@@ -48,22 +46,26 @@ def index():
 
     # display all this information on the web page
     page = '<html>\n<head><title>Display Your Auth Data</title></head>\n\n'
-    page = page + '<body>\n<p>' + str(session.get('realname')) + ', you are logged in.</p>\n\n'
-    page = page + '<p>Your local username is: ' + str(session.get('username')) + '</p>\n\n'
+    page = page + '<body>\n<p><b>' + str(session.get('realname')) + ', you are logged in.</b></p>\n\n'
+    page = page + '<p><b>Your local username is:</b> ' + str(session.get('username')) + '</p>\n\n'
     page = page + '<p><a href="'+logout_uri+'">Logout now.</a></p>\n\n'
-    page = page + '<p>OIDC UserInfo says your effective ID is ' + oidcinfo["sub"]
+    page = page + '<h2>The following data comes from the Globus Auth API.</h2>\n\n'
+    page = page + '<p>OIDC\'s <b>oauth2_userinfo()</b> call says your effective ID is ' + oidcinfo["sub"]
     page = page + ', your name is ' + oidcinfo["name"]
     page = page + ', and your email is ' + oidcinfo["email"] + '.</p>\n\n'
+    page = page + '<p><b>oauth2_userinfo()</b> returns this:</p>\n\n'
     page = page + '<pre>' + json.dumps(oidcinfo.data,indent=3) + '</pre>\n\n'
-    page = page + '<p>Your OIDC identity is:</p>\n<pre>' + json.dumps(myoidc,indent=3) + '</pre>\n\n'
-    page = page + '<p>Your Globus Auth identity is:</p>\n<pre>' + json.dumps(myids,indent=3) + '</pre>\n\n'
-    page = page + '<p>Introspecting your Auth API access token tells me:</p>\n<pre>' + json.dumps(ir,indent=3) + '</pre>\n\n'
-    # We probably shouldn't display the token, but for debugging purposes, here's how you'd do it...
+    page = page + '<p>Your OIDC <b>id_token</b> looks like this:</p>\n<pre>' + json.dumps(myoidc,indent=3) + '</pre>\n\n'
+    page = page + '<p><b>get_identities()</b> returns this:</p>\n'
+    page = page + '<pre>' + json.dumps(myids,indent=3) + '</pre>\n\n'
+    page = page + '<p>Calling <b>oauth2_token_introspect()</b> on your Auth API access token returns this:</p>\n'
+    page = page + '<pre>' + json.dumps(ir,indent=3) + '</pre>\n\n'
+    # We probably shouldn't display the token, but for debugging purposes, this is how you'd do it...
     # page = page + '<p>The tokens I received are:</p>\n<pre>' + json.dumps(session.get('tokens'),indent=3) + '</pre>\n\n'
     page = page + '</body></html>'
     return(page)
 
-@app.route("/login", methods=['GET'])
+@app.route('/login')
 def login():
     """
     Login via Globus Auth.
@@ -102,7 +104,7 @@ def login():
                 )
         return redirect(url_for('index'))
 
-@app.route("/logout", methods=['GET'])
+@app.route("/logout")
 def logout():
     """
     - Revoke the tokens with Globus Auth.
@@ -128,10 +130,14 @@ def logout():
         'https://auth.globus.org/v2/web/logout' +
         '?client={}'.format(app.config['APP_CLIENT_ID']) +
         '&redirect_uri={}'.format(redirect_uri) +
-        '&redirect_name=Your Flask App')
+        '&redirect_name=Display Your Auth Data')
 
     # Redirect the user to the Globus Auth logout page
     return redirect(globus_logout_url)
+
+def load_app_client():
+    return globus_sdk.ConfidentialAppAuthClient(
+        app.config['APP_CLIENT_ID'], app.config['APP_CLIENT_SECRET'])
 
 # actually run the app if this is called as a script
 if __name__ == '__main__':
