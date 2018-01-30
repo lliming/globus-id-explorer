@@ -16,9 +16,10 @@ configuration files.
 Before installing the app, you must have the following already available on your Web server system.
 
 1. A Web server! The examples provided here are for the Apache Web server, available on Linux systems.
-2. A WSGI module for your server. Check your server documentation.
-3. A Python installation. Python 3 is preferred, and the examples below assume it.
-4. The ``virtualenv`` and ``pip`` Python tools.
+2. A secure server certificate and HTTPS configuration. The Auth API relies on HTTPS communication. If you need a server certificate, I recommend [Let's Encrypt](https://letsencrypt.org/), which is free.
+3. A WSGI module for your server. Check your server documentation.
+4. A Python installation. Python 3 is preferred, and the examples below assume it.
+5. The ``virtualenv`` and ``pip`` Python tools.
 
 ## Installation
 The first installation step is to install the app files in a location where your web server can
