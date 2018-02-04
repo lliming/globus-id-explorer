@@ -31,18 +31,23 @@ def index():
     auth_token = str(session.get('tokens')['auth.globus.org']['access_token'])
     ac = globus_sdk.AuthClient(authorizer=globus_sdk.AccessTokenAuthorizer(auth_token))
 
-    # use Auth API to get more info about the authenticated user
-    myids = ac.get_identities(ids=str(session.get('username')),include="identity_provider").data
+    try:
+         # use Auth API to get more info about the authenticated user
+         myids = ac.get_identities(ids=str(session.get('username')),include="identity_provider").data
 
-    # use Auth API to get the standard OIDC userinfo fields (like any OIDC client)
-    oidcinfo = ac.oauth2_userinfo()
+         # use Auth API to get the standard OIDC userinfo fields (like any OIDC client)
+         oidcinfo = ac.oauth2_userinfo()
 
-    # get the stored OIDC id_token
-    myoidc = session.get('id_token')
+         # get the stored OIDC id_token
+         myoidc = session.get('id_token')
 
-    # authenticate to Auth API AS AN APPLICATION and find out still more information
-    cc = load_app_client()
-    ir = cc.oauth2_token_introspect(auth_token,include='identities_set').data
+         # authenticate to Auth API AS AN APPLICATION and find out still more information
+         cc = load_app_client()
+         ir = cc.oauth2_token_introspect(auth_token,include='identities_set').data
+    except GlobusAPIError:
+         # if any of the above have issues, trash the session and start over
+         session.clear()
+         return redirect(url_for('index'))
 
     # display all this information on the web page
     page = '<html>\n<head><title>Display Your Auth Data</title></head>\n\n'
