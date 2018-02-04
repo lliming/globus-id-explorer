@@ -3,6 +3,7 @@
 
 from flask import Flask, url_for, session, redirect, request
 import globus_sdk
+from globus_sdk import (GlobusError,GlobusAPIError)
 import json
 
 app = Flask(__name__)
