@@ -79,15 +79,7 @@ There's one more configuration piece that needs to be performed before you can u
 But in order to do it, you'll first need to register the app with Globus.
 
 ## Register with Globus
-All OIDC/OAuth2 apps must be registered with their authentication service. To register your
-app with Globus, open a Web browser and connect to https://developers.globus.org/. Click
-"Register your app with Globus." 
-
-If you haven't registered an app before, you'll first need to create a Project. This is 
-to help you keep track of your apps, so you can name the project anything you like.
-
-After you've created a Project, click the "Add..." button in the upper-right corner of the
-Project panel and select "Add new app."
+All OIDC/OAuth2 apps must be registered with their authentication service. Follow the app registration instructions in the [Auth API Developer's Guide](https://docs.globus.org/api/auth/developer-guide/#register-app).
 
 In order to be consistent with the app's prompts, you should name the app "Display Your
 Auth Data." The scopes field should be 
