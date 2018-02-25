@@ -113,7 +113,7 @@ def login():
     else:
         code = request.args.get('code')
         tokens_response = auth_client.oauth2_exchange_code_for_tokens(code)
-        ids = tokens_response.decode_id_token(auth_client)
+        ids = tokens_response.decode_id_token()
         session.update(
                 tokens=tokens_response.by_resource_server,
                 id_token=ids,
