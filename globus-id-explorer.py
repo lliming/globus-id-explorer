@@ -18,7 +18,7 @@ def index():
     """
     if not session.get('is_authenticated'):
          # display all this information on the web page
-         page = '<html>\n<head><title>Display Your Auth Data</title></head>\n\n'
+         page = '<html>\n<head><title>{}</title></head>\n\n'.format(app.config['APP_DISPLAY_NAME'])
          page = page + '<body>\n<p><b>You are not logged in.</b></p>\n\n'
          page = page + '<p>If you login, this page will show you what the Globus Auth API tells apps about you.</p>\n\n'
          page = page + '<p><a href="' + url_for('login') + '">Click here to login.</a></p>\n'
@@ -49,12 +49,20 @@ def index():
          # if any of the above have issues, trash the session and start over
          session.clear()
          return redirect(url_for('index'))
+         
 
     # display all this information on the web page
-    page = '<html>\n<head><title>Display Your Auth Data</title></head>\n\n'
+    page = '<html>\n<head><title>{}</title></head>\n\n'.format(app.config['APP_DISPLAY_NAME'])
     page = page + '<body>\n<p><b>' + str(session.get('realname')) + ', you are logged in.</b></p>\n\n'
     page = page + '<p><b>Your local username is:</b> ' + str(session.get('username')) + '</p>\n\n'
-    page = page + '<p><a href="'+logout_uri+'">Logout now.</a></p>\n\n'
+    page = page + '<p><b>Actions:</b> [ <a href="'+logout_uri+'">Logout</a>,\n'
+    idslink = "https://auth.globus.org/v2/web/identities?client_id={}&redirect_uri={}&redirect_name={}"
+    conslink = "https://auth.globus.org/v2/web/consents?client_id={}&redirect_uri={}&redirect_name={}"
+    page = page + '<a href="' 
+    page = page + idslink.format(app.config['APP_CLIENT_ID'],url_for('index',_external=True),app.config['APP_DISPLAY_NAME'])
+    page = page + '">Manage identities</a>,\n<a href="' 
+    page = page + conslink.format(app.config['APP_CLIENT_ID'],url_for('index',_external=True),app.config['APP_DISPLAY_NAME'])
+    page = page + '">Manage consents</a> ]</p>\n\n'
     page = page + '<h2>Your OpenID Connect Data</h2>\n\n'
     page = page + '<p>The following data is what OpenID Connect (OIDC) applications see.</p>'
     page = page + '<p>OIDC\'s <b>oauth2_userinfo()</b> call says:</p>\n\n'
@@ -139,9 +147,9 @@ def logout():
     # there is no tool to help build this (yet!)
     globus_logout_url = (
         'https://auth.globus.org/v2/web/logout' +
-        '?client={}'.format(app.config['APP_CLIENT_ID']) +
+        '?client_id={}'.format(app.config['APP_CLIENT_ID']) +
         '&redirect_uri={}'.format(redirect_uri) +
-        '&redirect_name=Display Your Auth Data')
+        '&redirect_name={}'.format(app.config['APP_DISPLAY_NAME']))
 
     # Redirect the user to the Globus Auth logout page
     return redirect(globus_logout_url)
