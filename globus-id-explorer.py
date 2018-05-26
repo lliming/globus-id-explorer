@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from flask import Flask, url_for, session, redirect, request
+from flask import Flask, url_for, session, redirect, request, render_template
 import globus_sdk
 from globus_sdk import (GlobusError,GlobusAPIError)
 import json
+
 
 app = Flask(__name__)
 app.config.from_pyfile('auth_example.conf')
@@ -18,13 +19,7 @@ def index():
     """
     if not session.get('is_authenticated'):
          # display all this information on the web page
-         page = '<html>\n<head><title>{}</title></head>\n\n'.format(app.config['APP_DISPLAY_NAME'])
-         page = page + '<body>\n<p><b>You are not logged in.</b></p>\n\n'
-         page = page + '<p>If you login, this page will show you what the Globus Auth API tells apps about you.</p>\n\n'
-         page = page + '<p><a href="' + url_for('login') + '">Click here to login.</a></p>\n'
-         page = page + '</body></html>'
-         return(page)
-         # return redirect(url_for('login'))
+         return render_template('not-logged-in.html', pagetitle=app.config['APP_DISPLAY_NAME'], loginurl=url_for('login'))
     logout_uri = url_for('logout', _external=True)
 
     # get the stored access token for the Auth API and use it 
@@ -50,39 +45,25 @@ def index():
          session.clear()
          return redirect(url_for('index'))
          
-
-    # display all this information on the web page
-    page = '<html>\n<head><title>{}</title></head>\n\n'.format(app.config['APP_DISPLAY_NAME'])
-    page = page + '<body>\n<p><b>' + str(session.get('realname')) + ', you are logged in.</b></p>\n\n'
-    page = page + '<p><b>Your local username is:</b> ' + str(session.get('username')) + '</p>\n\n'
-    page = page + '<p><b>Actions:</b> [ <a href="'+logout_uri+'">Logout</a>,\n'
+    # prepare the actions links
     idslink = "https://auth.globus.org/v2/web/identities?client_id={}&redirect_uri={}&redirect_name={}"
     conslink = "https://auth.globus.org/v2/web/consents?client_id={}&redirect_uri={}&redirect_name={}"
-    page = page + '<a href="' 
-    page = page + idslink.format(app.config['APP_CLIENT_ID'],url_for('index',_external=True),app.config['APP_DISPLAY_NAME'])
-    page = page + '">Manage identities</a>,\n<a href="' 
-    page = page + conslink.format(app.config['APP_CLIENT_ID'],url_for('index',_external=True),app.config['APP_DISPLAY_NAME'])
-    page = page + '">Manage consents</a> ]</p>\n\n'
-    page = page + '<h2>Your OpenID Connect Data</h2>\n\n'
-    page = page + '<p>The following data is what OpenID Connect (OIDC) applications see.</p>'
-    page = page + '<p>OIDC\'s <b>oauth2_userinfo()</b> call says:</p>\n\n'
-    page = page + '<ul>\n<li>Your name is "' + oidcinfo["name"] + '".\n'
-    page = page + '<li>Your email address is "' + oidcinfo["email"] + '".\n'
-    page = page + '<li>Your preferred_username is "' + oidcinfo["preferred_username"] + '".\n'
-    page = page + '<li>Your effective ID is "' + oidcinfo["sub"] + '".\n</ul>\n\n'
-    page = page + '<p>Your OIDC <b>id_token</b> looks like this:</p>\n<pre>' + json.dumps(myoidc,indent=3) + '</pre>\n\n'
-    page = page + '<p><b>oauth2_userinfo()</b> with the optional view_identity_set scope returns this:</p>\n\n'
-    page = page + '<pre>' + json.dumps(oidcinfo.data,indent=3) + '</pre>\n\n'
-    page = page + '<h2>Your Globus Data</h2>'
-    page = page + '<p>The following data is available via the Globus Auth API.</p>'
-    page = page + '<p><b>get_identities()</b> returns this:</p>\n'
-    page = page + '<pre>' + json.dumps(myids,indent=3) + '</pre>\n\n'
-    page = page + '<p><b>oauth2_token_introspect()</b> for your Auth API access token returns this:</p>\n'
-    page = page + '<pre>' + json.dumps(ir,indent=3) + '</pre>\n\n'
-    # We probably shouldn't display the token, but for debugging purposes, this is how you'd do it...
-    # page = page + '<p>The tokens I received are:</p>\n<pre>' + json.dumps(session.get('tokens'),indent=3) + '</pre>\n\n'
-    page = page + '</body></html>'
-    return(page)
+
+    # display all this information on the web page
+    return render_template('logged-in.html', pagetitle=app.config['APP_DISPLAY_NAME'], 
+         fullname=str(session.get('realname')),
+         username=str(session.get('username')),
+         logouturl=logout_uri,
+         idsurl=idslink.format(app.config['APP_CLIENT_ID'],url_for('index',_external=True),app.config['APP_DISPLAY_NAME']),
+         consentsurl=conslink.format(app.config['APP_CLIENT_ID'],url_for('index',_external=True),app.config['APP_DISPLAY_NAME']),
+         oidcname=oidcinfo["name"],
+         oidcemail=oidcinfo["email"],
+         oidcprefname=oidcinfo["preferred_username"],
+         oidcsub=oidcinfo["sub"],
+         id_token=json.dumps(myoidc,indent=3),
+         oidcinfo=json.dumps(oidcinfo.data,indent=3),
+         globusmyids=json.dumps(myids,indent=3),
+         globusintrores=json.dumps(ir,indent=3))
 
 @app.route('/login')
 def login():
@@ -113,7 +94,7 @@ def login():
     else:
         code = request.args.get('code')
         tokens_response = auth_client.oauth2_exchange_code_for_tokens(code)
-        ids = tokens_response.decode_id_token()
+        ids = tokens_response.decode_id_token(auth_client)
         session.update(
                 tokens=tokens_response.by_resource_server,
                 id_token=ids,
