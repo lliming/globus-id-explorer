@@ -8,7 +8,7 @@ import json
 
 
 app = Flask(__name__)
-app.config.from_pyfile('auth_example.conf')
+app.config.from_pyfile('globus_id_explorer.conf')
 
 @app.route('/')
 def index():
