@@ -56,12 +56,14 @@ def index():
          logouturl=logout_uri,
          idsurl=idslink.format(app.config['APP_CLIENT_ID'],url_for('index',_external=True),app.config['APP_DISPLAY_NAME']),
          consentsurl=conslink.format(app.config['APP_CLIENT_ID'],url_for('index',_external=True),app.config['APP_DISPLAY_NAME']),
+         oidcexplanationurl=url_for('oidc_explanation'),
          oidcname=oidcinfo["name"],
          oidcemail=oidcinfo["email"],
          oidcprefname=oidcinfo["preferred_username"],
          oidcsub=oidcinfo["sub"],
          id_token=json.dumps(myoidc,indent=3),
          oidcinfo=json.dumps(oidcinfo.data,indent=3),
+         globusexplanationurl=url_for('globus_explanation'),
          globusmyids=json.dumps(myids,indent=3),
          globusintrores=json.dumps(ir,indent=3))
 
@@ -134,6 +136,16 @@ def logout():
 
     # Redirect the user to the Globus Auth logout page
     return redirect(globus_logout_url)
+
+@app.route("/oidc-explanation")
+def oidc_explanation():
+    return render_template('oidc-explanation.html', pagetitle=app.config['APP_DISPLAY_NAME'],
+                           returnurl=url_for('index'))
+
+@app.route("/globus-explanation")
+def globus_explanation():
+    return render_template('globus-explanation.html', pagetitle=app.config['APP_DISPLAY_NAME'],
+                           returnurl=url_for('index'))
 
 def load_app_client():
     return globus_sdk.ConfidentialAppAuthClient(

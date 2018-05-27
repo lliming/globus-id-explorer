@@ -1,0 +1,82 @@
+{% extends "simple.html" %}
+{% block content %}
+     <div class="content-middle">
+          <div class="explanation">
+             <h2>How to interpret your OpenID Connect data</h2>
+
+             <p><a href="{{returnurl}}">Return to your data.</a></p>
+
+             <p>OpenID Connect (OIDC) is a standardized, secure way to provide access to information
+                about a person to an application. The application uses an OIDC service to access
+                information about the person using the application. The OIDC service first requires 
+                the person (the "user") to authenticate themselves, and then it asks the user for
+                permission to give information about themselves to the application. When the user
+                provides this <i>consent</i>, the OIDC service sends information about the user to
+                the application in a standardized format.</p>
+
+             <p>The <b>{{pagetitle}}</b> application uses an OIDC service called Globus Auth. Globus Auth
+                allows users to authenticate using any of several hundred identity providers, such as
+                universities, research labs, federal agencies, Google, and many more. It receives
+                data about the user from the identity provider and passes it along (with the user's
+                permission) to the application. Globus Auth also has a linking feature that allows
+                users to link information from more than one identity provider together into an
+                "identity set." This application shows all of your linked identity information, and
+                you can link or unlink your identities by clicking the <b>Manage identities</b> link at
+                the top of the main application page. You can further view and manage the applications
+                to which you've given permission to access your identity information by clicking the
+                <b>Manage Consents</b> link.</p>
+
+             <p>Most OIDC services provide specific basic information about users, and some OIDC
+                services provide additional information, but only with the user's explicit permission.
+                Globus Auth's OIDC service provides a full (human-readable) name, an email address, a
+                <i>preferred_username</i> and an <i>effective ID</i>.  Your OIDC id_token, which is 
+                provided to the application when you login, is the standardized format for OIDC identity 
+                information, and your effective ID corresponds to the "sub" field (short for 
+                "subject") in the id_token.</p>
+
+             <ul>
+                <li>The preferred_username is of the form <i>username@information-provider</i>, where 
+                    <i>information-provider</i> is one of the
+                    organizations you can authenticate with, and <i>username</i> is the username you use with that
+                    organization.</li>
+                <li>The effective ID is a unique string of characters and digits that is guaranteed
+                    to stay the same for you, even if you change your name, your email address, or the
+                    username you use. </li>
+             </ul>
+                
+             <p class="note">For XSEDE applications, Globus Auth will always use XSEDE as the
+                information provider for your OIDC profile. So the human-readable name, email address,
+                and username will always be taken from your XSEDE user profile. (View your profile in
+                the XSEDE user portal to compare them.) Your preferred_username should always be
+                your XSEDE username@xsede.org. The organization displayed will be whichever home
+                institution or affiliated organization is listed in your XSEDE user profile. You
+                should always see the name "XSEDE" for the identity_provider_display_name in your 
+                id_token.</p>
+
+             <p>OIDC services also provide a standard interface, oauth2_userinfo(), for obtaining
+                identity information. Globus Auth's OIDC service can provide more information if the
+                application explicitly requests it (and the user permits it to be given). Specifically,
+                Globus provides the full identity_set, or list of identities from other organizations
+                that you have linked together using Globus Auth. You can see how each organization
+                provides its own version of your identity. Your full name, email address, etc. may
+                be different from provider to provider, based on how you registered with each of them.
+                Use the identity_provider_display_name to see which organization provided the identity
+                information.</p>
+
+             <h2>Changing or correcting your data</h2>
+
+             <p>If you want to change any of the data displayed in your identity_set, you'll need to
+                change it with the identity providers themselves. Go to each provider's website and use
+                its user profile feature to make changes. The next time you authenticate using that 
+                identity provider in a Globus Auth client application, the data will be updated in 
+                Globus Auth.</p>
+
+             <p class="note">The data provided in your id_token is mostly taken from your XSEDE
+                user profile, so to change the id_token, go to the XSEDE user portal and use the user profile
+                feature to make changes. The next time you authenticate using your XSEDE username
+                and password in a Globus Auth client application, your id_token data will be updated.</p>
+
+             <p><a href="{{returnurl}}">Return to your data.</a></p>
+          </div>
+     </div>
+{% endblock %}

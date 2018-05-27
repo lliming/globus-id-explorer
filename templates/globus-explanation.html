@@ -1,0 +1,60 @@
+{% extends "simple.html" %}
+{% block content %}
+     <div class="content-middle">
+          <div class="explanation">
+             <h2>How to interpret your Globus identity data</h2>
+
+             <p><a href="{{returnurl}}">Return to your data.</a></p>
+
+             <p>The <b>{{pagetitle}}</b> application uses an OIDC service called Globus Auth. The
+                Globus Auth API offers a standard OIDC interface described in the OIDC section
+                of the main {{pagetitle}} page.</p>
+
+             <p>In addition to the standard OIDC interface, Globus provides two other ways for applications 
+                that use its Auth API to access information about their users. As with OIDC, the
+                application's user must give his/her explicit permission, or consent, for the
+                application to access this information.</p>
+
+             <p>The Auth API's <b>get_identities()</b> interface returns much of the same information as the
+                OIDC id_token. The "identities:" section, specifically, is mostly the same as the
+                id_token. The main difference is when the application explicitly requests the optional
+                "identity_providers:" section. This section provides a bit more information about the
+                provider of the identity information.</p>
+
+             <p class="note">For XSEDE applications, the identity_provider should always be XSEDE, 
+                with the domain "xsede.org".</p>
+
+             <p>The Auth API's <b>oauth2_token_introspect()</b> interface is a standard OAuth 2.0 interface.
+                It uses the access token for the Auth API that the application receives when the user 
+                logs in to find out a bit more about the user and any permissions the user agreed to
+                give to the application.  Specifically, the "scope" field shows which specific
+                interfaces the user is allowing the application to use on his/her behalf, and the
+                "aud" field displays the API the token can be used with: auth.globus.org, the Auth API.
+                The "iat" and "exp" fields are in <a href="https://www.epochconverter.com/">Unix time</a>,
+                and they note, respectively, when the access token was created for the application's use 
+                and when it will expire, or no longer be valid.</p>
+
+             <p>This application also requests identity_set information, so, assuming the user allows
+                access when he/she logs in, the response from oauth2_token_introspect() also includes
+                the identities_set, but only the "sub" fields are provided. Compare to the OIDC
+                oauth2_userinfo() response above, and you'll see the same identities listed.</p>
+
+             <h2>Changing or correcting your data</h2>
+
+             <p>If you want to change any of the data displayed here, you'll need to
+                change it with the identity provider that supplies the data. Go to the provider's 
+                website and use its user profile feature to make changes. The next time you 
+                authenticate using that identity provider in a Globus Auth client application, the 
+                data will be updated in Globus Auth.</p>
+
+             <p class="note">In XSEDE applications, the data provided by the get_identities() and 
+                oauth2_token_instrospect() interfaces is mostly taken from your XSEDE user profile, 
+                so to change the data, go to the XSEDE user portal and use the user profile
+                feature to make changes. The next time you authenticate using your XSEDE username
+                and password in a Globus Auth client application, the data displayed by these
+                interfaces will be updated.</p>
+
+             <p><a href="{{returnurl}}">Return to your data.</a></p>
+          </div>
+     </div>
+{% endblock %}

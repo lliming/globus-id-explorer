@@ -12,7 +12,9 @@
         <div class="oidc-data">
            <h2>Your OpenID Connect Data</h2>
 
-           <p>The following data is what OpenID Connect (OIDC) applications see.</p>
+           <p>The following data is what OpenID Connect (OIDC) applications see.
+              If you are confused or concerned about what you see below, 
+              <a href="{{oidcexplanationurl}}">click here</a>.</p>
            <p>OIDC's <b>oauth2_userinfo()</b> call says:</p>
            <ul>
               <li>Your name is "{{oidcname}}".</li>
@@ -29,7 +31,9 @@
         <div class="globus-data">
            <h2>Your Globus Data</h2>
 
-           <p>The following data is available via the Globus Auth API.</p>
+           <p>The following data is available via the Globus Auth API.
+              If you are confused or concerned about what you see below, 
+              <a href="{{globusexplanationurl}}">click here</a>.</p>
            <p><b>get_identities()</b> returns this:</p>
            <pre>{{globusmyids}}</pre>
            <p><b>oauth2_token_introspect()</b> for your Auth API access token returns this:</p>
