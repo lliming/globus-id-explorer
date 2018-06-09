@@ -1,5 +1,5 @@
 jinja2
 waitress
 Flask==0.12.1
-globus-sdk[jwt]
+globus-sdk>=1.4.0,<2.0.0
 pyOpenSSL
