@@ -44,7 +44,7 @@
                     username you use. </li>
              </ul>
                 
-             <p>OIDC services also provide a standard interface, oauth2_userinfo(), for obtaining
+             <p>OIDC services also provide a standard interface, <b>oauth2_userinfo()</b>, for obtaining
                 identity information. Globus Auth's OIDC service can provide more information if the
                 application explicitly requests it (and the user permits it to be given). Specifically,
                 Globus provides the full identity_set, or list of identities from other organizations
@@ -67,8 +67,8 @@
                 changes. The next time you authenticate using that identity provider in a Globus 
                 Auth client application, the data in your id_token will be updated.</p>
 
-             <p class="note">For XSEDE applications, XSEDE should be your primary identity
-                provider. So your OIDC name, email address, username, and organization come from 
+             <p class="note">XSEDE applications request XSEDE as the primary identity provider. When using 
+                these applications, your OIDC name, email address, username, and organization come from 
                 your XSEDE user profile. (View your profile in the XSEDE user portal to compare them.)</p>
 
              <p class="data">When you visited <b>{{pagetitle}}</b> just now, identity_set information 
