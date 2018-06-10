@@ -44,15 +44,6 @@
                     username you use. </li>
              </ul>
                 
-             <p class="note">For XSEDE applications, Globus Auth will always use XSEDE as the
-                identity provider for your OIDC profile. So the human-readable name, email address,
-                and username will always be taken from your XSEDE user profile. (View your profile in
-                the XSEDE user portal to compare them.) Your preferred_username should always be
-                your XSEDE username@xsede.org. The organization displayed will be whichever home
-                institution or affiliated organization is listed in your XSEDE user profile. You
-                should always see the name "XSEDE" for the identity_provider_display_name in your 
-                id_token.</p>
-
              <p>OIDC services also provide a standard interface, oauth2_userinfo(), for obtaining
                 identity information. Globus Auth's OIDC service can provide more information if the
                 application explicitly requests it (and the user permits it to be given). Specifically,
@@ -65,16 +56,29 @@
 
              <h2>Changing or correcting your data</h2>
 
+             <p class="data">When you visited <b>{{pagetitle}}</b> just now, your primary identity 
+                provider was <b class="data">{{primaryidp}}</b>.</p>
+
+             <p>The data in your OIDC id_token mostly comes from your primary identity provider. The
+                application may request a specific primary identity provider, but if it does not,
+                the primary identity provider is set by Globus Auth and it will be different for
+                each individual user. To change or correct the data in your OIDC id_token, go to
+                your primary identity provider's website and use its user profile feature to make
+                changes. The next time you authenticate using that identity provider in a Globus 
+                Auth client application, the data in your id_token will be updated.</p>
+
+             <p class="note">For XSEDE applications, XSEDE should be your primary identity
+                provider. So your OIDC name, email address, username, and organization come from 
+                your XSEDE user profile. (View your profile in the XSEDE user portal to compare them.)</p>
+
+             <p class="data">When you visited <b>{{pagetitle}}</b> just now, identity_set information 
+                appeared from the following identity providers: <b class="data">{{idsetproviders}}</b>.</p>
+
              <p>If you want to change any of the data displayed in your identity_set, you'll need to
                 change it with the identity provider(s) that supply the data. Go to each provider's website and use
                 its user profile feature to make changes. The next time you authenticate using that 
                 identity provider in a Globus Auth client application, the data will be updated in 
                 Globus Auth.</p>
-
-             <p class="note">In XSEDE applications, the data provided in your id_token is mostly taken from your XSEDE
-                user profile, so to change the id_token, go to the XSEDE user portal and use the user profile
-                feature to make changes. The next time you authenticate using your XSEDE username
-                and password in a Globus Auth client application, your id_token data will be updated.</p>
 
              <p><a href="{{returnurl}}">Return to your data.</a></p>
           </div>

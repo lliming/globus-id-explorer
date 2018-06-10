@@ -21,9 +21,6 @@
                 "identity_providers:" section. This section provides a bit more information about the
                 provider of the identity information.</p>
 
-             <p class="note">For XSEDE applications, the identity_provider should always be XSEDE, 
-                with the domain "xsede.org".</p>
-
              <p>The Auth API's <b>oauth2_token_introspect()</b> interface is a standard OAuth 2.0 interface.
                 It uses the access token for the Auth API that the application receives when the user 
                 logs in to find out a bit more about the user and any permissions the user agreed to
@@ -41,18 +38,21 @@
 
              <h2>Changing or correcting your data</h2>
 
-             <p>If you want to change any of the data displayed here, you'll need to
-                change it with the identity provider that supplies the data. Go to the provider's 
-                website and use its user profile feature to make changes. The next time you 
-                authenticate using that identity provider in a Globus Auth client application, the 
-                data will be updated in Globus Auth.</p>
+             <p class="data">When you visited <b>{{pagetitle}}</b> just now, your primary identity 
+                provider was <b class="data">{{primaryidp}}</b>.</p>
 
-             <p class="note">In XSEDE applications, the data provided by the get_identities() and 
-                oauth2_token_instrospect() interfaces is mostly taken from your XSEDE user profile, 
-                so to change the data, go to the XSEDE user portal and use the user profile
-                feature to make changes. The next time you authenticate using your XSEDE username
-                and password in a Globus Auth client application, the data displayed by these
-                interfaces will be updated.</p>
+             <p>The data returned by get_identities() mostly comes from your primary identity 
+                provider. The application may request a specific primary identity provider, but if 
+                it does not, the primary identity provider is set by Globus Auth and it will be different for
+                each individual user. To change or correct the data returned by get_identities(), go to
+                your primary identity provider's website and use its user profile feature to make
+                changes. The next time you authenticate using that identity provider in a Globus 
+                Auth client application, the get_identities() will return the updated information.</p>
+
+             <p class="note">For XSEDE applications, the identity_provider should always be XSEDE, 
+                with the domain "xsede.org". The get_identities() function will return information 
+                from your XSEDE user profile.  (View your profile in the XSEDE user portal to compare 
+                them.</p>
 
              <p><a href="{{returnurl}}">Return to your data.</a></p>
           </div>

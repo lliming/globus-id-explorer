@@ -139,13 +139,58 @@ def logout():
 
 @app.route("/oidc-explanation")
 def oidc_explanation():
+    if not session.get('is_authenticated'):
+         # display all this information on the web page
+         return render_template('not-logged-in.html', pagetitle=app.config['APP_DISPLAY_NAME'], loginurl=url_for('login'))
+
+    # get the id_token from session context
+    myoidc = session.get('id_token')
+    primaryidp = myoidc['identity_provider_display_name'];
+
+    # get the stored access token for the Auth API and use it 
+    # to authorize stuff AS THE AUTHENTICATED USER
+    auth_token = str(session.get('tokens')['auth.globus.org']['access_token'])
+    ac = globus_sdk.AuthClient(authorizer=globus_sdk.AccessTokenAuthorizer(auth_token))
+
+    # get the identity_set from oauth2_userinfo()
+    try:
+         # use Auth API to get more info about the authenticated user
+         myids = ac.get_identities(ids=str(session.get('username')),include="identity_provider").data
+
+         # use Auth API to get the standard OIDC userinfo fields (like any OIDC client)
+         oidcinfo = ac.oauth2_userinfo()
+    except GlobusAPIError:
+         # if any of the above have issues, trash the session and start over
+         session.clear()
+         return redirect(url_for('index'))
+         
+    # there will always be at least one entry in the identity_set
+    idsetproviders = ''
+    first = True
+    for id in oidcinfo.data['identity_set']:
+         if first:
+              first = False
+         else:
+              idsetproviders += ', '
+         idsetproviders += id['identity_provider_display_name']
     return render_template('oidc-explanation.html', pagetitle=app.config['APP_DISPLAY_NAME'],
-                           returnurl=url_for('index'))
+                           returnurl=url_for('index'),
+                           primaryidp=primaryidp,
+                           idsetproviders=idsetproviders)
 
 @app.route("/globus-explanation")
 def globus_explanation():
+    if not session.get('is_authenticated'):
+         # display all this information on the web page
+         return render_template('not-logged-in.html', pagetitle=app.config['APP_DISPLAY_NAME'], loginurl=url_for('login'))
+
+    # get the id_token from session context
+    myoidc = session.get('id_token')
+    primaryidp = myoidc['identity_provider_display_name'];
+
     return render_template('globus-explanation.html', pagetitle=app.config['APP_DISPLAY_NAME'],
-                           returnurl=url_for('index'))
+                           returnurl=url_for('index'),
+                           primaryidp=primaryidp)
 
 def load_app_client():
     return globus_sdk.ConfidentialAppAuthClient(
