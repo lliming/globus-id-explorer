@@ -41,7 +41,7 @@ Now clone the git repository in the new directory to make a local copy of everyt
 [git does its thing]
 % cd globus-id-explorer
 % ls
-auth.conf  globus-id-explorer.conf  globus-id-explorer.py  globus-id-explorer.wsgi  requirements.txt
+auth.conf  globus_id_explorer.conf  globus_id_explorer.py  globus-id-explorer.wsgi  README.md  requirements.txt  templates 
 % 
 ```
 This will create a subdirectory called ``globus-id-explorer`` with the files in it.
@@ -104,7 +104,7 @@ get the data you need to complete configuring your app.
 ## Complete app configuration
 
 Now that your app is registered with Globus, return to your installation directory and
-edit the ``globus-id-explorer.conf`` file.
+edit the ``globus_id_explorer.conf`` file.
 
 - First, change the ``SERVER_NAME=`` value to your Web server's HTTPS address, plus
   ``/auth`` on the end. E.g., ``https://home.leeandkristin.net/auth``. (If you don't do
