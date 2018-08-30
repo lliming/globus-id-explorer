@@ -39,7 +39,7 @@ def index():
 
          # authenticate to Auth API AS AN APPLICATION and find out still more information
          cc = load_app_client()
-         ir = cc.oauth2_token_introspect(auth_token,include='identities_set').data
+         ir = cc.oauth2_token_introspect(auth_token,include='identities_set,session_info').data
     except GlobusAPIError:
          # if any of the above have issues, trash the session and start over
          session.clear()
