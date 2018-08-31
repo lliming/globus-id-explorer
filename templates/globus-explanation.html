@@ -31,10 +31,26 @@
                 and they note, respectively, when the access token was created for the application's use 
                 and when it will expire, or no longer be valid.</p>
 
-             <p>This application also requests identity_set information, so, assuming the user allows
+             <p><b>{{pagetitle}}</b> also requests identity_set information, so, assuming the user allows
                 access when he/she logs in, the response from <b>oauth2_token_introspect()</b> also includes
                 the identities_set, but only the "sub" fields are provided. Compare to the OIDC
                 <b>oauth2_userinfo()</b> response above, and you'll see the same identities listed.</p>
+
+             <p>Finally, <b>{{pagetitle}}</b> requests session_info information, so the output of 
+                <b>oauth2_token_introspect()</b> should include a session_info section that includes
+                information about any authentication events (when you authenticated with a specific identity
+                provider) that occurred during this Web browser session.  If there are authentications 
+                listed, then the key for each authentication is the "sub" value for one of your identities. 
+                (You can find it in the identities_set section.) Compare the idp UUID with the 
+                identity_provider UUIDs in the <b>oauth2_userinfo()</b> output above to see which identity 
+                provider you authenticated with. Convert the auth_time value using the 
+                <a href="https://www.epochconverter.com/">Epoch converter</a> to see when you 
+                authenticated.</p>
+
+             <p class="note">If there are no authentications listed in the session_info section, you 
+                probably had an active authentication from a previous session and were able to login to 
+                <b>{{pagetitle}}</b> without re-authenticating. If you logout of <b>{{pagetitle}}</b> and 
+                log back in, you'll see a new authentication listed in this section.</p>
 
              <h2>Changing or correcting your data</h2>
 
