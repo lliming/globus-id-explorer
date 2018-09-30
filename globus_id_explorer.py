@@ -192,6 +192,11 @@ def globus_explanation():
                            returnurl=url_for('index'),
                            primaryidp=primaryidp)
 
+@app.route("/privacy")
+def privacy():
+    return render_template('privacy.html', pagetitle=app.config['APP_DISPLAY_NAME'],
+                           returnurl=url_for('index'))
+
 def load_app_client():
     return globus_sdk.ConfidentialAppAuthClient(
         app.config['APP_CLIENT_ID'], app.config['APP_CLIENT_SECRET'])
