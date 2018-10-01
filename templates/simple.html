@@ -42,9 +42,11 @@
 			}
 			.oidc-data h2 {
 				border-top: 2px solid #000;
+                                padding-top: 0.25em;
 			}
 			.globus-data h2 {
 				border-top: 2px solid #000;
+                                padding-top: 0.25em;
 			}
 			hr {
 				display: none;
@@ -108,6 +110,10 @@
 			a:hover img {
 				border: 2px solid #f50;
 			}
+			.footer {
+				padding-top: 0.25em;
+				border-top: 2px solid #000;
+			}
 			/*]]>*/
 		</style>
 	</head>
@@ -117,6 +123,9 @@
 
 		<div class="content">
                     {% block content %}{% endblock %}
+                    <div class="footer">
+                        <p><a href="{{ url_for('privacy') }}">Privacy policy</a></p>
+                    </div>
 		</div>
 	</body>
 </html>
