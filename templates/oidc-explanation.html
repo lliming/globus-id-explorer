@@ -36,14 +36,20 @@
 
              <ul>
                 <li>The preferred_username is of the form <i>username@identity-provider</i>, where 
-                    <i>identity-provider</i> is one of the
-                    organizations you can authenticate with, and <i>username</i> is the username you use with that
-                    organization.</li>
+                    <i>identity-provider</i> is one of the organizations you can authenticate with, 
+                    and <i>username</i> is your username as reported by the organization. (See note
+                    below.)</li>
                 <li>The effective ID is a unique string of characters and digits that is guaranteed
                     to stay the same for you, even if you change your name, your email address, or the
                     username you use. </li>
              </ul>
                 
+             <p class="note">Some identity providers&mdash;especially academic institutions and schools&mdash;report
+                anonymized (scrambled) usernames to prevent misuse of your username. In the 
+                preferred_username field, you might see a random string of numbers and letters 
+                instead of your actual username. The same string will be used consistently every time 
+                you login.</p>
+
              <p>OIDC services also provide a standard interface, <b>oauth2_userinfo()</b>, for obtaining
                 identity information. Globus Auth's OIDC service can provide more information if the
                 application explicitly requests it (and the user permits it to be given). Specifically,
