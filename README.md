@@ -1,15 +1,15 @@
 # globus-id-explorer
-This is a Web app that allows anyone to explore their Globus identity information. It is intended 
-to be deployed on a public Web server so that one can connect to it using a Web browser, login, 
-see the data that Globus's Auth API provides to the app, and logout. The purpose of the app is to 
-show Web developers what the identity information returned from the Auth API looks like so that 
+This is a Web app that allows anyone to explore their Globus identity information. It is intended
+to be deployed on a public Web server so that one can connect to it using a Web browser, login,
+see the data that Globus's Auth API provides to the app, and logout. The purpose of the app is to
+show Web developers what the identity information returned from the Auth API looks like so that
 they can then write their own apps that use the Auth API.
 
-This app is meant to be deployed as a [WSGI application](https://wsgi.readthedocs.io/en/latest/) 
-using a standard Web server (e.g., Apache) as a host. The server is responsible for providing a 
-secure HTTP (HTTPS) environment in which the app can run. The Web server administrator must 
-enable the WSGI module and add a server configuration module that references the location where 
-this app has been installed. Instructions are below, and this repository includes sample 
+This app is meant to be deployed as a [WSGI application](https://wsgi.readthedocs.io/en/latest/)
+using a standard Web server (e.g., Apache) as a host. The server is responsible for providing a
+secure HTTP (HTTPS) environment in which the app can run. The Web server administrator must
+enable the WSGI module and add a server configuration module that references the location where
+this app has been installed. Instructions are below, and this repository includes sample
 configuration files.
 
 ## Prerequisites
@@ -23,12 +23,12 @@ Before installing the app, you must have the following already available on your
 
 ## Installation
 The first installation step is to install the app files in a location where your web server can
-access them. Assuming that your Web server uses the /var/www/html directory as its document 
+access them. Assuming that your Web server uses the /var/www/html directory as its document
 root, you might want to create /var/www/apps as the root for your Web apps.  Create the directory
 and set permissions so you can put things there.
 ```
 % sudo su
-[sudo] password for liming: 
+[sudo] password for liming:
 # cd /var/www
 # mkdir apps
 # chown liming:liming apps
@@ -41,8 +41,8 @@ Now clone the git repository in the new directory to make a local copy of everyt
 [git does its thing]
 % cd globus-id-explorer
 % ls
-auth.conf  globus_id_explorer.conf  globus_id_explorer.py  globus-id-explorer.wsgi  README.md  requirements.txt  templates 
-% 
+auth.conf  globus_id_explorer.conf  globus_id_explorer.py  globus-id-explorer.wsgi  README.md  requirements.txt  templates
+%
 ```
 This will create a subdirectory called ``globus-id-explorer`` with the files in it.
 
@@ -54,9 +54,9 @@ Next, create a Python virtual environment and install the required Python packag
 (venv) % pip install -r requirements.txt
 [pip does its thing]
 (venv) % deactivate
-% 
+%
 ```
-Now, edit the ``globus-id-explorer.wsgi`` file and change the path in the sys.path.insert line 
+Now, edit the ``globus-id-explorer.wsgi`` file and change the path in the sys.path.insert line
 so that it matches the path to your app directory. (If you installed your app in ``/var/www/apps/globus-id-explorer``
 as shown above, the path is already set properly and you won't need to change it.)
 
@@ -82,16 +82,20 @@ But in order to do it, you'll first need to register the app with Globus.
 All OIDC/OAuth2 apps must be registered with their authentication service. Follow the app registration instructions in the [Auth API Developer's Guide](https://docs.globus.org/api/auth/developer-guide/#register-app).
 
 In order to be consistent with the app's prompts, you should name the app "Display Your
-Auth Data." The scopes field should be 
+Auth Data." The scopes field should be
 ``openid email profile urn:globus:auth:scope:auth.globus.org:view_identity_set``. (Note
 that you only have to type the first few letters and the field will find what you're
 looking for. The last scope is easiest to find by typing 'set'.) The most important
-field is the "Redirects" field. It must be set to your Web server's HTTPS address, plus 
+field is the "Redirects" field. It must be set to your Web server's HTTPS address, plus
 ``/auth/login`` on the end. The ``/auth`` corresponds to the app path you specified in
 the ``auth.conf`` file. The ``/login`` part is the login path defined in the app's code.
 On my server, it looks like this:
 ```
 https://home.leeandkristin.net/auth/login
+```
+This app provides a privacy policy, so you can fill in the "Privacy Policy" field with your Web server's HTTPS address plus ``/auth/privacy``. Globus will display a link to your privacy policy the first time each user logs in. On my server, it looks like this:
+```
+https://home.leeandkristin.net/auth/privacy
 ```
 You can leave the rest of the app registration form blank, or mess around with different
 values if you feel adventurous. However, **do not** check the box next to "Native App."
@@ -108,7 +112,7 @@ edit the ``globus_id_explorer.conf`` file.
 
 - First, change the ``SERVER_NAME=`` value to your Web server's HTTPS address, plus
   ``/auth`` on the end. E.g., ``https://home.leeandkristin.net/auth``. (If you don't do
-  this, your app won't respond to requests. It's important!) 
+  this, your app won't respond to requests. It's important!)
 - Then, copy and paste the
   Client ID from your Web browser window (showing your app registration) into the line
   beginning with ``APP_CLIENT_ID``.  
