@@ -5,6 +5,7 @@ from flask import Flask, url_for, session, redirect, request, render_template
 import globus_sdk
 from globus_sdk import (GlobusError,GlobusAPIError)
 import json
+import time
 
 
 app = Flask(__name__)
@@ -45,6 +46,9 @@ def index():
          session.clear()
          return redirect(url_for('index'))
          
+    # use session data to find out how the user authenticated
+    authevents = get_auth_events(ir,oidcinfo)
+
     # prepare the actions links
     idslink = "https://auth.globus.org/v2/web/identities?client_id={}&redirect_uri={}&redirect_name={}"
     conslink = "https://auth.globus.org/v2/web/consents?client_id={}&redirect_uri={}&redirect_name={}"
@@ -53,6 +57,7 @@ def index():
     return render_template('logged-in.html', pagetitle=app.config['APP_DISPLAY_NAME'], 
          fullname=str(session.get('realname')),
          username=str(session.get('username')),
+         authevents=authevents,
          logouturl=logout_uri,
          idsurl=idslink.format(app.config['APP_CLIENT_ID'],url_for('index',_external=True),app.config['APP_DISPLAY_NAME']),
          consentsurl=conslink.format(app.config['APP_CLIENT_ID'],url_for('index',_external=True),app.config['APP_DISPLAY_NAME']),
@@ -201,6 +206,31 @@ def load_app_client():
     return globus_sdk.ConfidentialAppAuthClient(
         app.config['APP_CLIENT_ID'], app.config['APP_CLIENT_SECRET'])
 
+def get_auth_events(introspectdata,oidcinfo):
+    try:
+        authns=introspectdata['session_info']['authentications']
+    except:
+        # There isn't a proper session_info entry in the token introspection results.
+        return "Who let you in here?"
+    if len(authns)<1:
+        # The user didn't have to authenticate because there was an open session from another application.
+        return "You didn't have to authenticate when you logged in."
+
+    # There are authentication events!
+    timenow = time.time()
+    auth_events = ''
+    first = True
+    for authid,authdata in authns.items():
+        # How long has it been since this event?
+        duration = int((timenow-authdata['auth_time'])/60)
+        # Look up the IdP in the identity_set from the oidcinfo structure.
+        idp = '(unknown)'
+        for id in oidcinfo.data['identity_set']:
+            if (id['identity_provider'] == authdata['idp']):
+                 idp = id['identity_provider_display_name']
+        auth_events += 'You authenticated {} minutes ago with {}. '.format(duration,idp)
+    return auth_events
+    
 # actually run the app if this is called as a script
 if __name__ == '__main__':
     app.run(host='0.0.0.0',port=5000,debug=True,ssl_context=('./keys/server.crt', './keys/server.key'))
