@@ -12,7 +12,7 @@
         <p>Most OpenID Connect apps use the <b>ID Token</b> to identify individual users. 
            Explanations follow the data below. When you logged in, {{pagetitle}} received the 
            following ID Token from Globus.  If you are concerned about this data, 
-           <a href="{{oidcexplanationurl}}">click here</a>.</p>
+           <a href="{{explanationurl}}">click here</a>.</p>
 
         <pre>{{id_token}}</pre>
 
@@ -39,5 +39,11 @@
            <i>sub</i> field has those guarantees.) Although preferred_username looks like an email 
            address, it may or may not be a valid email address. Apps should use the <i>email</i> 
            field instead.</p>
+
+        <p class="note">Some identity providers&mdash;especially academic institutions and schools&mdash;report
+           anonymized usernames to prevent misuse of your username. In the 
+           preferred_username field, you might see a random string of numbers and letters 
+           instead of your actual username. The same string will be used consistently every time 
+           you login.</p>
      </div>
 {% endblock %}

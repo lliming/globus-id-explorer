@@ -12,7 +12,7 @@
         <p>OpenID Connect apps can use the <b>UserInfo</b> interface to get more information about 
            their users.  Explanations follow the data below. Globus's UserInfo interface returns the 
            following information about you. If you are concerned about this data, 
-           <a href="{{oidcexplanationurl}}">click here</a>.</p></p>
+           <a href="{{explanationurl}}">click here</a>.</p></p>
 
            <pre>{{oidcinfo}}</pre>
 
@@ -21,7 +21,13 @@
 
         <p>Applications using the Globus Auth API may also request individuals' linked identities. This 
            information is provided through the UserInfo interface and it appears as an <i>identity set</i>.
-           When you logged in, {{pagetitle}} requested access to your linked identities.</p>
+           (When you logged in, {{pagetitle}} requested access to your linked identities.) In the identity_set, 
+           the preferred_username is replaced by username. The meaning is the same.</p>
 
+        <p class="note">Some identity providers&mdash;especially academic institutions and schools&mdash;report
+           anonymized usernames to prevent misuse of your username. In the preferred_username or username 
+           field, you might see a random string of numbers and letters     
+           instead of your actual username. The same string will be used consistently every time     
+           you login.</p>
      </div>
 {% endblock %}

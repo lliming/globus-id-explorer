@@ -10,10 +10,11 @@
         </div>
 
         <p>Apps can use Globus's <b>Identities API</b> to retrieve information about an identity using
-           either a <i>username</i> (<i>username</i>@<i>identity.provider</i>) or a <i>sub</i>.
+           either a <i>username</i> (<i>username</i>@<i>identity.provider</i>) or a <i>sub</i> 
+           (aka <i>id</i>).
            Explanations follow the data below. The Identities API returns the following information 
-           about your <i>sub</i>. If you are concerned about this data, 
-           <a href="{{globusexplanationurl}}">click here</a>.</p></p>
+           about the <i>sub</i> in your ID Token. If you are concerned about this data, 
+           <a href="{{explanationurl}}">click here</a>.</p></p>
 
            <pre>{{globusmyids}}</pre>
 
@@ -21,6 +22,12 @@
            and <i>identity_provider</i> are the same as in your 
            <a href="{{ url_for('index') }}">ID Token</a>. The <i>id</i> is the same as the ID Token 
            <i>sub</i>.  The <i>username</i> is the same as the ID Token <i>preferred_username</i>.</p>
+
+       <p class="note">Some identity providers&mdash;especially academic institutions and schools&mdash;report
+           anonymized usernames to prevent misuse of your username. In the preferred_username or username 
+           field, you might see a random string of numbers and letters     
+           instead of your actual username. The same string will be used consistently every time     
+           you login.</p>
 
         <p>Applications using the Identities API may also request information about the identity 
            providers for a given identity. This information is provided in the <i>included</i> section.

@@ -12,7 +12,7 @@
         <p>OAuth 2.0 apps can use <b>token introspection</b> to get more information about an 
            access token. Explanations follow the data below. Introspecting your Globus Auth API 
            access token returns the following information. If you are concerned about 
-           this data, <a href="{{globusexplanationurl}}">click here</a>.</p></p>
+           this data, <a href="{{explanationurl}}">click here</a>.</p></p>
 
            <pre>{{globusintrores}}</pre>
 
@@ -21,8 +21,13 @@
            Globus; it is the username reported by the identity provider and the identity provider's 
            primary domain. (Some services reuse usernames and/or allow users to change their usernames, 
            so it is not guaranteed to remain the same for a given individual or never be reused. The 
-           sub field has those guarantees.) Although preferred_username looks like an email address, 
+           sub field has those guarantees.) Although the username looks like an email address, 
            it may or may not be a valid email address. Apps should use the email field instead.</p>
+
+       <p class="note">Some identity providers&mdash;especially academic institutions and schools&mdash;report
+           anonymized usernames to prevent misuse of your username. In the username field, you might 
+           see a random string of numbers and letters instead of your actual username. The same string will 
+           be used consistently every time you login.</p>
 
         <p>Applications using the Globus Auth API may also request individuals' linked identities. This 
            information is available via token introspection and it appears as an identity set.

@@ -29,7 +29,7 @@ def index():
     # display all this information on the web page
     return render_template('id-token.html',
          pagetitle=app.config['APP_DISPLAY_NAME'],
-         oidcexplanationurl=url_for('oidc_explanation'),
+         explanationurl=url_for('change_effective_id'),
          id_token=json.dumps(myoidc,indent=3),
          loginstat=loginstatus)
 
@@ -61,7 +61,7 @@ def userinfo():
     # display all this information on the web page
     return render_template('userinfo.html',
          pagetitle=app.config['APP_DISPLAY_NAME'],
-         oidcexplanationurl=url_for('oidc_explanation'),
+         explanationurl=url_for('change_linked_ids'),
          oidcinfo=json.dumps(oidcinfo.data,indent=3),
          loginstat=loginstatus)
 
@@ -92,7 +92,7 @@ def introspection():
     # display all this information on the web page
     return render_template('introspection.html',
          pagetitle=app.config['APP_DISPLAY_NAME'],
-         globusexplanationurl=url_for('globus_explanation'),
+         explanationurl=url_for('change_effective_id'),
          globusintrores=json.dumps(ir,indent=3),
          loginstat=loginstatus)
 
@@ -124,7 +124,7 @@ def identities():
     # display all this information on the web page
     return render_template('identities.html',
          pagetitle=app.config['APP_DISPLAY_NAME'],
-         globusexplanationurl=url_for('globus_explanation'),
+         explanationurl=url_for('change_effective_id'),
          globusmyids=json.dumps(myids,indent=3),
          loginstat=loginstatus)
 
@@ -167,7 +167,7 @@ def sessioninfo():
     # display all this information on the web page
     return render_template('session.html',
          pagetitle=app.config['APP_DISPLAY_NAME'],
-         globusexplanationurl=url_for('globus_explanation'),
+         explanationurl=url_for('change_effective_id'),
          authevents=authevents,
          sessioninfo=json.dumps(sinfo,indent=3),
          loginstat=loginstatus)
@@ -243,8 +243,8 @@ def logout():
     # Redirect the user to the Globus Auth logout page
     return redirect(globus_logout_url)
 
-@app.route("/oidc-explanation")
-def oidc_explanation():
+@app.route("/change-linked-ids")
+def change_linked_ids():
     # Call get_login_status() to fill out the login status variables (for login/logout display)
     loginstatus = get_login_status()
 
@@ -285,15 +285,15 @@ def oidc_explanation():
          else:
               idsetproviders += ', '
          idsetproviders += id['identity_provider_display_name']
-    return render_template('oidc-explanation.html',
+    return render_template('change-linked-ids.html',
                            pagetitle=app.config['APP_DISPLAY_NAME'],
                            returnurl=url_for('index'),
                            primaryidp=primaryidp,
                            idsetproviders=idsetproviders,
                            loginstat=loginstatus)
 
-@app.route("/globus-explanation")
-def globus_explanation():
+@app.route("/change-effective-id")
+def change_effective_id():
     # Call get_login_status() to fill out the login status variables (for login/logout display)
     loginstatus = get_login_status()
 
@@ -308,7 +308,7 @@ def globus_explanation():
     myoidc = session.get('id_token')
     primaryidp = myoidc['identity_provider_display_name'];
 
-    return render_template('globus-explanation.html',
+    return render_template('change-effective-id.html',
                            pagetitle=app.config['APP_DISPLAY_NAME'],
                            returnurl=url_for('index'),
                            primaryidp=primaryidp,

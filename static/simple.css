@@ -13,7 +13,7 @@ body {
 	border: 0 0 0 0;
 }
 
-p {
+p,blockquote {
 	font-size: 1.0em;
 	font-family: Arial, Helvetica, sans-serif;
 }
@@ -22,12 +22,7 @@ h1 {
 	font-family: Arial, Helvetica, sans-serif;
 	font-weight: bold;
 }
-h2 {
-	font-size: 1.5em;
-	font-family: Arial, Helvetica, sans-serif;
-	font-weight: bold;
-}
-h3 {
+h2,h3 {
 	font-size: 1.5em;
 	font-family: Arial, Helvetica, sans-serif;
 	font-weight: bold;
@@ -199,19 +194,18 @@ hr {
 	font-size: 0.75em;
 }
 
-.status {
-	background-color: #ddf;
-	padding: 0.125em 0.5em;
-	color: #000;
-}
 p.note {
 	background-color: #ddf;
 	padding: 0.125em 0.5em;
+	margin-left: 5em;
+	margin-right: 5em;
 	color: #000;
 }
 p.data {
 	background-color: #fed;
 	padding: 0.125em 0.5em;
+	margin-left: 5em;
+	margin-right: 5em;
 	color: #000;
 }
 b.data {
