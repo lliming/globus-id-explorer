@@ -1,14 +1,6 @@
 {% extends "simple.html" %}
 {% block content %}
      <div class="content-middle">
-        <div class="status">
-           <p><b>{{fullname}}, you are logged in.</b></p>
-           <p><b>Your local username is:</b> {{username}}</p>
-           <p><b>Actions:</b> [ <a href="{{logouturl}}">Logout</a>, 
-                                <a href="{{idsurl}}">Manage identities</a>, 
-                                <a href="{{consentsurl}}">Manage consents</a> ]</p>
-        </div>
-
         <div class="oidc-data">
            <h2>Your OpenID Connect Data</h2>
 

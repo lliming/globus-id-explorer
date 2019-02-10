@@ -1,10 +1,8 @@
 {% extends "simple.html" %}
 {% block content %}
      <div class="content-middle">
-          <div class="status">
-             <p><b>You are not logged in.</b></p>
-             <p>If you login, this page will show you what the Globus Auth API tells apps about you.</p>
-             <p><a href="{{loginurl}}">Click here to login.</a></p>
-          </div>
+             <h2>You are not logged in.</h2>
+             <p>Click the Login button to login, and {{pagetitle}} will show you 
+                what apps using the Globus Auth API can find out about you.</p>
      </div>
 {% endblock %}

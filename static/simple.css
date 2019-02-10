@@ -1,0 +1,198 @@
+html {
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+}
+
+body {
+	background-color: #fff;
+	color: #000;
+	font-size: 1.0em;
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+	border: 0 0 0 0;
+}
+
+p {
+	font-size: 1.0em;
+	font-family: Arial, Helvetica, sans-serif;
+}
+h1 {
+	font-size: 2.0em;
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: bold;
+}
+h2 {
+	font-size: 1.5em;
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: bold;
+}
+h3 {
+	font-size: 1.5em;
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: bold;
+}
+:link {
+	color: #00c;
+}
+:visited {
+	color: #00c;
+}
+a:hover {
+	color: #f50;
+}
+a:active {
+	color: #f50;
+}
+
+#titlebar {
+	height: 5em;
+	margin: 0 0 0 0;
+        padding: 0 0 0 0;
+	background-color: #22437f;
+	border-bottom: 2px solid #444;
+}
+#titlebar h1 {
+	text-align: left;
+	margin: 0 0 0 0;
+        padding: 0.28em 0 0 0.57em;
+	color: #fff;
+	font-weight: normal;
+	font-size: 1.75em;
+}
+
+#loginout {
+	position: absolute;
+	top: 0;
+        right: 1em;
+	color: #fff;
+}
+#loginout p.fullname {
+	margin: 0.5em 0 0.25em 0;
+	padding: 0 0 0 0;
+}
+#loginout p.userid {
+	font-size: 0.75em;
+	margin: 0.25em 0 0.5em 0;
+	padding: 0 0 0 0;
+}
+#loginout p.logout {
+	font-size: 0.75em;
+}
+#loginout a.logout {
+	background-color: #6696ed;
+	padding: 0.25em 0.5em;
+	border-radius: 0.5em;
+}
+#loginout p.login {
+	font-size: 0.75em;
+}
+#loginout a.login {
+	background-color: #6696ed;
+	padding: 0.25em 0.5em;
+	border-radius: 0.5em;
+}
+#loginout a:link {
+	text-decoration: none;
+	color: #fff;
+}
+#loginout a:visited {
+	text-decoration: none;
+	color: #fff;
+}
+#loginout a:hover {
+	text-decoration: none;
+	color: #f50;
+}
+#loginout a:active {
+	text-decoration: none;
+	color: #f50;
+}
+
+.oidc-data h2 {
+        padding-top: 0.25em;
+}
+.globus-data h2 {
+	border-top: 2px solid #000;
+        padding-top: 0.25em;
+}
+
+hr {
+	display: none;
+}
+
+.content {
+	padding: 0em 1em;
+	min-height: 15em;
+}
+.content-columns {
+	/* Setting relative positioning allows for 
+	absolute positioning for sub-classes */
+	position: relative;
+	padding-top: 1em;
+}
+.content-column-left {
+	/* Value for IE/Win; will be overwritten for other browsers */
+	width: 47%;
+	padding-right: 3%;
+	float: left;
+	padding-bottom: 2em;
+}
+.content-column-left hr {
+	display: none;
+}
+.content-column-right {
+	/* Values for IE/Win; will be overwritten for other browsers */
+	width: 47%;
+	padding-left: 3%;
+	float: left;
+	padding-bottom: 2em;
+}
+.content-columns>.content-column-left, .content-columns>.content-column-right {
+	/* Non-IE/Win */
+}
+
+.content p {
+	line-height: 1.25em;
+}
+
+.footer {
+	padding-top: 0em;
+	border-top: 2px solid #444;
+	padding-left: 1em;
+}
+.footer p {
+	margin: 0.5em 0;
+	font-size: 0.75em;
+}
+
+.status {
+	background-color: #ddf;
+	padding: 0.125em 0.5em;
+	color: #000;
+}
+p.note {
+	background-color: #ddf;
+	padding: 0.125em 0.5em;
+	color: #000;
+}
+p.data {
+	background-color: #fed;
+	padding: 0.125em 0.5em;
+	color: #000;
+}
+b.data {
+	background-color: #fed;
+	color: #724805;
+}
+pre {
+	background-color: #ddd;
+}
+img {
+	border: 2px solid #fff;
+	padding: 2px;
+	margin: 2px;
+}
+a:hover img {
+	border: 2px solid #f50;
+}
