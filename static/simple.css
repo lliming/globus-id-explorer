@@ -109,6 +109,38 @@ a:active {
 	color: #f50;
 }
 
+#navbar p {
+	text-align: center;
+	margin-bottom: 2em;
+}
+#navbar a.active {
+        background-color: #6696ed;
+        padding: 0.25em 0.5em;
+        border-radius: 0.5em;
+}
+#navbar a.inactive {
+        background-color: #22437f;
+        padding: 0.25em 0.5em;
+        border-radius: 0.5em;
+}
+#navbar a:link {
+        text-decoration: none;
+        color: #fff;
+}
+#navbar a:visited {
+        text-decoration: none;
+        color: #fff;
+}
+#navbar a:hover {
+        text-decoration: none;
+        color: #f50;
+}
+#navbar a:active {
+        text-decoration: none;
+        color: #f50;
+}
+
+
 .oidc-data h2 {
         padding-top: 0.25em;
 }
@@ -157,6 +189,7 @@ hr {
 }
 
 .footer {
+	margin-top: 2em;
 	padding-top: 0em;
 	border-top: 2px solid #444;
 	padding-left: 1em;
@@ -187,6 +220,7 @@ b.data {
 }
 pre {
 	background-color: #ddd;
+	font-size: 1.25em;
 }
 img {
 	border: 2px solid #fff;

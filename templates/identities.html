@@ -1,0 +1,35 @@
+{% extends "simple.html" %}
+{% block content %}
+     <div class="content-middle">
+        <div id="navbar">
+             <p><a class="inactive" href="{{ url_for('index') }}">ID Token</a>
+                <a class="inactive" href="{{ url_for('userinfo') }}">UserInfo</a>
+                <a class="inactive" href="{{ url_for('introspection') }}">Introspection</a>
+                <a class="active" href="{{ url_for('identities') }}">Identities</a>
+                <a class="inactive" href="{{ url_for('sessioninfo') }}">Session</a></p>
+        </div>
+
+        <p>Apps can use Globus's <b>Identities API</b> to retrieve information about an identity using
+           either a <i>username</i> (<i>username</i>@<i>identity.provider</i>) or a <i>sub</i>.
+           Explanations follow the data below. The Identities API returns the following information 
+           about your <i>sub</i>. If you are concerned about this data, 
+           <a href="{{globusexplanationurl}}">click here</a>.</p></p>
+
+           <pre>{{globusmyids}}</pre>
+
+        <p>In the <i>identities</i> section, the <i>name</i>, <i>organization</i>, <i>email</i>,
+           and <i>identity_provider</i> are the same as in your 
+           <a href="{{ url_for('index') }}">ID Token</a>. The <i>id</i> is the same as the ID Token 
+           <i>sub</i>.  The <i>username</i> is the same as the ID Token <i>preferred_username</i>.</p>
+
+        <p>Applications using the Identities API may also request information about the identity 
+           providers for a given identity. This information is provided in the <i>included</i> section.
+           ({{pagetitle}} requested this information.) For the identity provider, the <i>id</i> is a
+           unique identifier that will never be used for a different identity provider. The 
+           <i>name</i> and <i>short_name</i> are human-readable names for the identity provider.
+           The <i>alternative_names</i> list other human-readable names for the same identity provider.
+           The <i>domains</i> list unique, machine-readable domains, used in identity usernames and 
+           preferred_usernames, for which this identity provider is authoritative. This identity provider 
+           is the only one that may issue identities in these domains.</p>
+     </div>
+{% endblock %}

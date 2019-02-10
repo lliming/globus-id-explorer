@@ -1,0 +1,46 @@
+{% extends "simple.html" %}
+{% block content %}
+     <div class="content-middle">
+        <div id="navbar">
+             <p><a class="inactive" href="{{ url_for('index') }}">ID Token</a>
+                <a class="inactive" href="{{ url_for('userinfo') }}">UserInfo</a>
+                <a class="active" href="{{ url_for('introspection') }}">Introspection</a>
+                <a class="inactive" href="{{ url_for('identities') }}">Identities</a>
+                <a class="inactive" href="{{ url_for('sessioninfo') }}">Session</a></p>
+        </div>
+
+        <p>OAuth 2.0 apps can use <b>token introspection</b> to get more information about an 
+           access token. Explanations follow the data below. Introspecting your Globus Auth API 
+           access token returns the following information. If you are concerned about 
+           this data, <a href="{{globusexplanationurl}}">click here</a>.</p></p>
+
+           <pre>{{globusintrores}}</pre>
+
+        <p>The <i>name</i>, <i>sub</i>, and <i>email</i> are the same as in your 
+           <a href="{{ url_for('index') }}">ID Token</a>. The <i>username</i> is constructed by
+           Globus; it is the username reported by the identity provider and the identity provider's 
+           primary domain. (Some services reuse usernames and/or allow users to change their usernames, 
+           so it is not guaranteed to remain the same for a given individual or never be reused. The 
+           sub field has those guarantees.) Although preferred_username looks like an email address, 
+           it may or may not be a valid email address. Apps should use the email field instead.</p>
+
+        <p>Applications using the Globus Auth API may also request individuals' linked identities. This 
+           information is available via token introspection and it appears as an identity set.
+           (The values in the <i>identities_set</i> are the <i>sub</i> value of each linked identity.)
+           When you logged in, {{pagetitle}} requested access to your linked identities.</p>
+
+        <p>Applications using the Globus Auth API may also request details about how and when
+           an individual authenticated with an identity provider. This information is available 
+           via token introspection and it appears as <i>session_info</i>. The 
+           <a href="{{ url_for('sessioninfo') }}">Session</a> panel in {{pagetitle}} explains this data.</p>
+
+        <p>The <i>iss</i> (issuer) identifies Globus as the source of the access token. <i>iat</i>,
+           <i>nbf</i>, and <i>exp</i> are times (in <a href="https://www.epochconverter.com/">Unix Epoch</a>
+           format) when the token was created, when it becomes valid, and when it will expire.
+           The <i>aud</i> (audience) identifies the service the token should be used with (Globus Auth API) and
+           the app it was created for ({{pagetitle}}). The <i>client_id</i> also identifies the
+           app that requested the token. The <i>scope</i> lists the actions the app may perform using 
+           this token: viewing your profile, your OpenID Connect data, your email address, and your 
+           linked identities.</p>
+     </div>
+{% endblock %}

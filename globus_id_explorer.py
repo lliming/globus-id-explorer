@@ -23,22 +23,65 @@ def index():
                                 loginurl=url_for('login'),
                                 loginstat=loginstatus)
 
+    # get the stored OIDC id_token
+    myoidc = session.get('id_token')
+
+    # display all this information on the web page
+    return render_template('id-token.html',
+         pagetitle=app.config['APP_DISPLAY_NAME'],
+         oidcexplanationurl=url_for('oidc_explanation'),
+         id_token=json.dumps(myoidc,indent=3),
+         loginstat=loginstatus)
+
+@app.route('/userinfo')
+def userinfo():
+    # Call get_login_status() to fill out the login status variables (for login/logout display)
+    loginstatus = get_login_status()
+
+    # If not logged in, welcome and invite to login
+    if not session.get('is_authenticated'):
+         return render_template('not-logged-in.html',
+                                pagetitle=app.config['APP_DISPLAY_NAME'],
+                                loginurl=url_for('login'),
+                                loginstat=loginstatus)
+
     # get the stored access token for the Auth API and use it
     # to authorize stuff AS THE AUTHENTICATED USER
     auth_token = str(session.get('auth_token'))
     ac = globus_sdk.AuthClient(authorizer=globus_sdk.AccessTokenAuthorizer(auth_token))
 
     try:
-         # use Auth API to get more info about the authenticated user
-         myids = ac.get_identities(ids=str(session.get('userid')),include="identity_provider").data
-
          # use Auth API to get the standard OIDC userinfo fields (like any OIDC client)
          oidcinfo = ac.oauth2_userinfo()
+    except GlobusAPIError:
+         # if any of the above have issues, trash the session and start over
+         session.clear()
+         return redirect(url_for('index'))
 
-         # get the stored OIDC id_token
-         myoidc = session.get('id_token')
+    # display all this information on the web page
+    return render_template('userinfo.html',
+         pagetitle=app.config['APP_DISPLAY_NAME'],
+         oidcexplanationurl=url_for('oidc_explanation'),
+         oidcinfo=json.dumps(oidcinfo.data,indent=3),
+         loginstat=loginstatus)
 
-         # authenticate to Auth API AS AN APPLICATION and find out still more information
+@app.route('/introspection')
+def introspection():
+    # Call get_login_status() to fill out the login status variables (for login/logout display)
+    loginstatus = get_login_status()
+
+    # If not logged in, welcome and invite to login
+    if not session.get('is_authenticated'):
+         return render_template('not-logged-in.html',
+                                pagetitle=app.config['APP_DISPLAY_NAME'],
+                                loginurl=url_for('login'),
+                                loginstat=loginstatus)
+
+    # get the stored access token for the Auth API
+    auth_token = str(session.get('auth_token'))
+
+    try:
+         # authenticate to Auth API AS AN APPLICATION and use it to introspect the token
          cc = load_app_client()
          ir = cc.oauth2_token_introspect(auth_token,include='identities_set,session_info').data
     except GlobusAPIError:
@@ -46,23 +89,87 @@ def index():
          session.clear()
          return redirect(url_for('index'))
 
-    # use session data to find out how the user authenticated
-    authevents = get_auth_events(ir,oidcinfo)
+    # display all this information on the web page
+    return render_template('introspection.html',
+         pagetitle=app.config['APP_DISPLAY_NAME'],
+         globusexplanationurl=url_for('globus_explanation'),
+         globusintrores=json.dumps(ir,indent=3),
+         loginstat=loginstatus)
+
+@app.route('/identities')
+def identities():
+    # Call get_login_status() to fill out the login status variables (for login/logout display)
+    loginstatus = get_login_status()
+
+    # If not logged in, welcome and invite to login
+    if not session.get('is_authenticated'):
+         return render_template('not-logged-in.html',
+                                pagetitle=app.config['APP_DISPLAY_NAME'],
+                                loginurl=url_for('login'),
+                                loginstat=loginstatus)
+
+    # get the stored access token for the Auth API and use it to access the Auth API 
+    # on the user's behalf
+    auth_token = str(session.get('auth_token'))
+    ac = globus_sdk.AuthClient(authorizer=globus_sdk.AccessTokenAuthorizer(auth_token))
+
+    try:
+         # use Auth API to get more info about the authenticated user
+         myids = ac.get_identities(ids=str(session.get('userid')),include="identity_provider").data
+    except GlobusAPIError:
+         # if any of the above have issues, trash the session and start over
+         session.clear()
+         return redirect(url_for('index'))
 
     # display all this information on the web page
-    return render_template('logged-in.html',
+    return render_template('identities.html',
          pagetitle=app.config['APP_DISPLAY_NAME'],
-         authevents=authevents,
-         oidcexplanationurl=url_for('oidc_explanation'),
-         oidcname=oidcinfo["name"],
-         oidcemail=oidcinfo["email"],
-         oidcprefname=oidcinfo["preferred_username"],
-         oidcsub=oidcinfo["sub"],
-         id_token=json.dumps(myoidc,indent=3),
-         oidcinfo=json.dumps(oidcinfo.data,indent=3),
          globusexplanationurl=url_for('globus_explanation'),
          globusmyids=json.dumps(myids,indent=3),
-         globusintrores=json.dumps(ir,indent=3),
+         loginstat=loginstatus)
+
+@app.route('/sessioninfo')
+def sessioninfo():
+    # Call get_login_status() to fill out the login status variables (for login/logout display)
+    loginstatus = get_login_status()
+
+    # If not logged in, welcome and invite to login
+    if not session.get('is_authenticated'):
+         return render_template('not-logged-in.html',
+                                pagetitle=app.config['APP_DISPLAY_NAME'],
+                                loginurl=url_for('login'),
+                                loginstat=loginstatus)
+
+    # get the stored access token for the Auth API and use it to authorize access
+    # on the user's behalf
+    auth_token = str(session.get('auth_token'))
+    ac = globus_sdk.AuthClient(authorizer=globus_sdk.AccessTokenAuthorizer(auth_token))
+
+    try:
+         # authenticate to Auth API AS AN APPLICATION and use it to introspect the token
+         cc = load_app_client()
+         ir = cc.oauth2_token_introspect(auth_token,include='identities_set,session_info').data
+
+         # get the UserInfo data with the identity_set included.
+         # this is used below to look up the identity provider's name.
+         oidcinfo = ac.oauth2_userinfo()
+
+         # use the session data to find out how the user authenticated
+         authevents = get_auth_events(ir,oidcinfo)
+
+         # pull the session information out of the introspection results
+         sinfo = ir['session_info']
+    except GlobusAPIError:
+         # if any of the above have issues, trash the session and start over
+         session.clear()
+         return redirect(url_for('index'))
+
+    # display all this information on the web page
+    return render_template('session.html',
+         pagetitle=app.config['APP_DISPLAY_NAME'],
+         globusexplanationurl=url_for('globus_explanation'),
+         authevents=authevents,
+         sessioninfo=json.dumps(sinfo,indent=3),
          loginstat=loginstatus)
 
 @app.route('/login')
@@ -249,7 +356,7 @@ def get_auth_events(introspectdata,oidcinfo):
         return "Who let you in here?"
     if len(authns)<1:
         # The user didn't have to authenticate because there was an open session from another application.
-        return "You didn't have to authenticate when you logged in."
+        return "You were already signed in to Globus when you logged in to this app, so single sign-on allowed you in without authenticating."
 
     # There are authentication events!
     timenow = time.time()

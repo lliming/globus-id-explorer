@@ -1,0 +1,46 @@
+{% extends "simple.html" %}
+{% block content %}
+     <div class="content-middle">
+        <div id="navbar">
+             <p><a class="inactive" href="{{ url_for('index') }}">ID Token</a>
+                <a class="inactive" href="{{ url_for('userinfo') }}">UserInfo</a>
+                <a class="inactive" href="{{ url_for('introspection') }}">Introspection</a>
+                <a class="inactive" href="{{ url_for('identities') }}">Identities</a>
+                <a class="active" href="{{ url_for('sessioninfo') }}">Session</a></p>
+        </div>
+
+        <p>Globus allows apps to obtain details about your current
+           <b>login session</b>, including when and how you last authenticated with an 
+           identity provider. (The app can use this data to enforce a strict authentication policy.) 
+           Explanations follow the data below.
+           If you are concerned about this data, <a href="{{globusexplanationurl}}">click here</a>.</p></p>
+
+        <pre>{{sessioninfo}}</pre>
+
+        <p>The data above can be interpreted as follows.</p>
+
+        <blockquote>{{authevents}}</blockquote>
+
+        <p>This information was obtained via
+           <a href="{{ url_for('introspection') }}">token introspection</a> on your access token
+           for the Globus Auth API. {{pagetitle}} specifically requested your session information 
+           in its introspection request.</p>
+
+        <p>The <i>authentications</i> data lists every time you authenticated with an identity
+           provider during the current login session. A new login session is started whenever 
+           you log into an app and there is no open session. The session closes when you close 
+           your web browser, log out of Globus Auth, or log into a different identity set. The 
+           <i>session_id</i> is a unique identifier for the current login session.</p>
+
+        <p>Because {{pagetitle}} never asks you to re-authenticate, you shouldn't have more than 
+           one authentication in this login session. <u>You might have zero</u>, however,
+           if you were already logged in to Globus (or another app that uses Globus) when you 
+           visited {{pagetitle}} and single sign-on allowed you to login without re-authenticating.</p>
+
+        <p>Within the <i>authentications</i> section, each item has a key and a value. The key is
+           the <i>sub</i> (aka <i>id</i>) for the identity you authenticated to. The value has two
+           items: <i>idp</i> is the Globus identifier for the identity provider you authenticated
+           with, and <i>auth_time</i> is the time (in <a href="https://www.epochconverter.com/">Unix 
+           Epoch</a> format) when the authentication occurred.</p>
+     </div>
+{% endblock %}

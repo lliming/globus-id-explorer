@@ -1,0 +1,27 @@
+{% extends "simple.html" %}
+{% block content %}
+     <div class="content-middle">
+        <div id="navbar">
+             <p><a class="inactive" href="{{ url_for('index') }}">ID Token</a>
+                <a class="active" href="{{ url_for('userinfo') }}">UserInfo</a>
+                <a class="inactive" href="{{ url_for('introspection') }}">Introspection</a>
+                <a class="inactive" href="{{ url_for('identities') }}">Identities</a>
+                <a class="inactive" href="{{ url_for('sessioninfo') }}">Session</a></p>
+        </div>
+
+        <p>OpenID Connect apps can use the <b>UserInfo</b> interface to get more information about 
+           their users.  Explanations follow the data below. Globus's UserInfo interface returns the 
+           following information about you. If you are concerned about this data, 
+           <a href="{{oidcexplanationurl}}">click here</a>.</p></p>
+
+           <pre>{{oidcinfo}}</pre>
+
+        <p>The data returned by the UserInfo interface is the same as the 
+           <a href="{{ url_for('index') }}">ID Token</a> with the following addition.</p>
+
+        <p>Applications using the Globus Auth API may also request individuals' linked identities. This 
+           information is provided through the UserInfo interface and it appears as an <i>identity set</i>.
+           When you logged in, {{pagetitle}} requested access to your linked identities.</p>
+
+     </div>
+{% endblock %}

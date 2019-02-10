@@ -1,0 +1,43 @@
+{% extends "simple.html" %}
+{% block content %}
+     <div class="content-middle">
+        <div id="navbar">
+             <p><a class="active" href="{{ url_for('index') }}">ID Token</a>
+                <a class="inactive" href="{{ url_for('userinfo') }}">UserInfo</a>
+                <a class="inactive" href="{{ url_for('introspection') }}">Introspection</a>
+                <a class="inactive" href="{{ url_for('identities') }}">Identities</a>
+                <a class="inactive" href="{{ url_for('sessioninfo') }}">Session</a></p>
+        </div>
+
+        <p>Most OpenID Connect apps use the <b>ID Token</b> to identify individual users. 
+           Explanations follow the data below. When you logged in, {{pagetitle}} received the 
+           following ID Token from Globus.  If you are concerned about this data, 
+           <a href="{{oidcexplanationurl}}">click here</a>.</p>
+
+        <pre>{{id_token}}</pre>
+
+        <p>The ID Token typically includes the individual's name, an email address, a username, and a 
+           <i>sub</i> (unique ID, short for "subject"). The sub is unique to the authentication 
+           service (Globus) and will never be used for two different individuals.</p>
+
+        <p>Globus ID Tokens include an <i>identity_provider</i> and <i>identity_provider_display_name</i>.
+           These tell us which of your linked identities was used for this ID Token.</p>
+
+        <p>You may have several linked identities in Globus, but the ID Token can only have one.
+           Globus normally fills your ID Token with data from your primary identity in Globus.
+           However, if an app requires an identity from a specific organization, Globus will use 
+           that identity instead.  Either way, Globus will always give the app the same identity 
+           for you, regardless of which organization you choose when you login.</p>  
+
+        <p>The <i>organization</i>, <i>email</i>, and <i>name</i> are usually provided by the 
+           individual when he or she registers with the identity provider.</p>
+
+        <p>The <i>preferred_username</i> is contructed by
+           Globus; it is the username reported by the identity provider and the identity provider's 
+           primary domain. (Some services reuse usernames and/or allow users to change their usernames,
+           so it is not guaranteed to remain the same for a given individual or never be reused. The
+           <i>sub</i> field has those guarantees.) Although preferred_username looks like an email 
+           address, it may or may not be a valid email address. Apps should use the <i>email</i> 
+           field instead.</p>
+     </div>
+{% endblock %}
