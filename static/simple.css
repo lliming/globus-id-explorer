@@ -75,22 +75,28 @@ a:active {
 	font-size: 0.75em;
 }
 #loginout a.logout {
-	background-color: #6696ed;
+	background-color: #004681;
 	padding: 0.25em 0.5em;
+	border: 1px;
+	border-style: solid;
+	border-color: #fff;
 	border-radius: 0.5em;
 }
 #loginout p.login {
 	font-size: 0.75em;
 }
 #loginout a.login {
-	background-color: #6696ed;
+	background-color: #004681;
 	padding: 0.25em 0.5em;
+	border: 1px;
+	border-style: solid;
+	border-color: #fff;
 	border-radius: 0.5em;
 }
 #loginout a.xsede-login {
 	display: block;
-	width: 192px;
-	height: 40px;
+	width: 157px;
+	height: 30px;
 	background: url('/xsede-auth/static/login-with-xsede.png') 0 0 no-repeat;
 	text-indent: -99999px;
 	overflow: hidden;
