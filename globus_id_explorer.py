@@ -18,7 +18,7 @@ def index():
 
     # If not logged in, welcome and invite to login
     if not session.get('is_authenticated'):
-         return render_template('not-logged-in.html',
+         return render_template(app.config['APP_LOGIN_TEMPLATE'],
                                 pagetitle=app.config['APP_DISPLAY_NAME'],
                                 loginurl=url_for('login'),
                                 loginstat=loginstatus)
@@ -40,7 +40,7 @@ def userinfo():
 
     # If not logged in, welcome and invite to login
     if not session.get('is_authenticated'):
-         return render_template('not-logged-in.html',
+         return render_template(app.config['APP_LOGIN_TEMPLATE'],
                                 pagetitle=app.config['APP_DISPLAY_NAME'],
                                 loginurl=url_for('login'),
                                 loginstat=loginstatus)
@@ -72,7 +72,7 @@ def introspection():
 
     # If not logged in, welcome and invite to login
     if not session.get('is_authenticated'):
-         return render_template('not-logged-in.html',
+         return render_template(app.config['APP_LOGIN_TEMPLATE'],
                                 pagetitle=app.config['APP_DISPLAY_NAME'],
                                 loginurl=url_for('login'),
                                 loginstat=loginstatus)
@@ -103,7 +103,7 @@ def identities():
 
     # If not logged in, welcome and invite to login
     if not session.get('is_authenticated'):
-         return render_template('not-logged-in.html',
+         return render_template(app.config['APP_LOGIN_TEMPLATE'],
                                 pagetitle=app.config['APP_DISPLAY_NAME'],
                                 loginurl=url_for('login'),
                                 loginstat=loginstatus)
@@ -135,7 +135,7 @@ def sessioninfo():
 
     # If not logged in, welcome and invite to login
     if not session.get('is_authenticated'):
-         return render_template('not-logged-in.html',
+         return render_template(app.config['APP_LOGIN_TEMPLATE'],
                                 pagetitle=app.config['APP_DISPLAY_NAME'],
                                 loginurl=url_for('login'),
                                 loginstat=loginstatus)
@@ -250,7 +250,7 @@ def change_linked_ids():
 
     # If not logged in, welcome and invite to login
     if not session.get('is_authenticated'):
-         return render_template('not-logged-in.html',
+         return render_template(app.config['APP_LOGIN_TEMPLATE'],
                                 pagetitle=app.config['APP_DISPLAY_NAME'],
                                 loginurl=url_for('login'),
                                 loginstat=loginstatus)
@@ -299,7 +299,7 @@ def change_effective_id():
 
     # If not logged in, welcome and invite to login
     if not session.get('is_authenticated'):
-         return render_template('not-logged-in.html',
+         return render_template(app.config['APP_LOGIN_TEMPLATE'],
                                 pagetitle=app.config['APP_DISPLAY_NAME'],
                                 loginurl=url_for('login'),
                                 loginstat=loginstatus)

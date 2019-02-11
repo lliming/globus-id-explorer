@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+	<head>
+		<title>{{pagetitle}}</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+                <LINK rel="stylesheet" type="text/css" href="{{ url_for('static',filename='simple.css') }}">
+	</head>
+	<body>
+                <div id="titlebar">
+		    <h1>{{pagetitle}}</h1>
+                    <div id="loginout">
+                        {% if loginstat["status"] == True %}
+                           <p class="fullname">{{loginstat["fullname"]}}</p>
+                           <p class="userid">{{loginstat["identity"]}}</p>
+                           <p class="logout"><a class="logout" href="{{loginstat["logoutlink"]}}">Logout</a></p>
+                        {% else %}
+                           <p class="login"><a class="xsede-login" href="{{loginstat["loginlink"]}}">Login</a></p>
+                        {% endif %}
+                    </div>
+                </div>
+
+		<div class="content">
+                    {% block content %}{% endblock %}
+		</div>
+
+                <div class="footer">
+                    <p><a href="{{ url_for('privacy') }}">Privacy policy</a></p>
+                </div>
+	</body>
+</html>

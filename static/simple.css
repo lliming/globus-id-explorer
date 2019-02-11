@@ -44,7 +44,7 @@ a:active {
 	height: 5em;
 	margin: 0 0 0 0;
         padding: 0 0 0 0;
-	background-color: #22437f;
+	background-color: #004681;
 	border-bottom: 2px solid #444;
 }
 #titlebar h1 {
@@ -86,6 +86,14 @@ a:active {
 	background-color: #6696ed;
 	padding: 0.25em 0.5em;
 	border-radius: 0.5em;
+}
+#loginout a.xsede-login {
+	display: block;
+	width: 192px;
+	height: 40px;
+	background: url('/xsede-auth/static/login-with-xsede.png') 0 0 no-repeat;
+	text-indent: -99999px;
+	overflow: hidden;
 }
 #loginout a:link {
 	text-decoration: none;
