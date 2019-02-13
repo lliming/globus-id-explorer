@@ -5,7 +5,7 @@ see the data that Globus's Auth API provides to the app, and logout. The purpose
 show Web developers what the identity information returned from the Auth API looks like so that
 they can then write their own apps that use the Auth API.
 
-<img src="Assets/screenshot.png" width="75%" height="75%">
+<img src="Assets/screenshot.png" width="50%" height="50%" border=1>
 
 This app is meant to be deployed as a [WSGI application](https://wsgi.readthedocs.io/en/latest/)
 using a standard Web server (e.g., Apache) as a host. The server is responsible for providing a
