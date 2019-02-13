@@ -9,9 +9,9 @@
                 <a class="inactive" href="{{ url_for('sessioninfo') }}">Session</a></p>
         </div>
 
-        <p>Most OpenID Connect apps use the <b>ID Token</b> to identify individual users. 
-           Explanations follow the data below. When you logged in, {{pagetitle}} received the 
-           following ID Token from Globus.  If you are concerned about this data, 
+        <p>Most OpenID Connect apps use the <b>ID Token</b> to identify individuals. 
+           When you logged in, {{pagetitle}} received the following ID Token from Globus.  
+           Explanations follow the data below. To learn how to correct this data, 
            <a href="{{explanationurl}}">click here</a>.</p>
 
         <pre>{{id_token}}</pre>
@@ -34,7 +34,7 @@
 
         <p>The <i>preferred_username</i> is contructed by
            Globus; it is the username reported by the identity provider and the identity provider's 
-           primary domain. (Some services reuse usernames and/or allow users to change their usernames,
+           primary domain. (Some services reuse usernames and/or allow individuals to change their usernames,
            so it is not guaranteed to remain the same for a given individual or never be reused. The
            <i>sub</i> field has those guarantees.) Although preferred_username looks like an email 
            address, it may or may not be a valid email address. Apps should use the <i>email</i> 

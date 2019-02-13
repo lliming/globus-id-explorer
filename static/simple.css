@@ -74,18 +74,10 @@ a:active {
 #loginout p.logout {
 	font-size: 0.75em;
 }
-#loginout a.logout {
-	background-color: #004681;
-	padding: 0.25em 0.5em;
-	border: 1px;
-	border-style: solid;
-	border-color: #fff;
-	border-radius: 0.5em;
-}
 #loginout p.login {
 	font-size: 0.75em;
 }
-#loginout a.login {
+#loginout a {
 	background-color: #004681;
 	padding: 0.25em 0.5em;
 	border: 1px;
@@ -95,6 +87,8 @@ a:active {
 }
 #loginout a.xsede-login {
 	display: block;
+	padding: 0;
+	border-style: none;
 	width: 157px;
 	height: 30px;
 	background: url('/xsede-auth/static/login-with-xsede.png') 0 0 no-repeat;
@@ -109,13 +103,25 @@ a:active {
 	text-decoration: none;
 	color: #fff;
 }
-#loginout a:hover {
+#loginout a.login:hover {
 	text-decoration: none;
-	color: #f50;
+	background: #6696ed;
+	color: #fff;
 }
-#loginout a:active {
+#loginout a.login:active {
 	text-decoration: none;
-	color: #f50;
+	background: #6696ed;
+	color: #fff;
+}
+#loginout a.logout:hover {
+	text-decoration: none;
+	background: #6696ed;
+	color: #fff;
+}
+#loginout a.logout:active {
+	text-decoration: none;
+	background: #6696ed;
+	color: #fff;
 }
 
 #navbar p {
@@ -128,7 +134,7 @@ a:active {
         border-radius: 0.5em;
 }
 #navbar a.inactive {
-        background-color: #22437f;
+        background-color: #004681;
         padding: 0.25em 0.5em;
         border-radius: 0.5em;
 }
@@ -142,11 +148,13 @@ a:active {
 }
 #navbar a:hover {
         text-decoration: none;
-        color: #f50;
+	background: #6696ed;
+        color: #fff;
 }
 #navbar a:active {
         text-decoration: none;
-        color: #f50;
+	background: #6696ed;
+        color: #fff;
 }
 
 
@@ -209,15 +217,17 @@ hr {
 }
 
 p.note {
-	background-color: #ddf;
-	padding: 0.125em 0.5em;
+	background-color: #b2cee6;
+        border-radius: 0.5em;
+	padding: 0.5em 1em;
 	margin-left: 5em;
 	margin-right: 5em;
 	color: #000;
 }
 p.data {
 	background-color: #fed;
-	padding: 0.125em 0.5em;
+        border-radius: 0.5em;
+	padding: 0.5em 1em;
 	margin-left: 5em;
 	margin-right: 5em;
 	color: #000;
@@ -227,7 +237,9 @@ b.data {
 	color: #724805;
 }
 pre {
-	background-color: #ddd;
+	background-color: #ccc;
+        border-radius: 0.5em;
+	padding: 0.5em 1em;
 	font-size: 1.25em;
 }
 img {
