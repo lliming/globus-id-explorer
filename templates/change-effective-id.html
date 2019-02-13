@@ -2,7 +2,7 @@
 {% block content %}
      <div class="content-middle">
           <div class="explanation">
-             <h2>Changing or correcting your identity data</h2>
+             <h2>Correcting your identity data</h2>
 
              <p>{{pagetitle}} obtains identity data from Globus. Globus obtains identity data
                 from the organizations you've logged in with or have linked in Globus. These
@@ -13,17 +13,14 @@
                 identity provider for this app, but other apps may request a different effective identity
                 provider.</p>
 
-             <p>The data shown in your <b>ID Token</b>, from <b>token introspection</b>, and from the 
-                <b>Identities API</b> mostly
-                comes from this identity provider. To change or correct the data returned by these 
-                interfaces, go to the effective identity provider's website and use its user profile 
-                feature to make changes. The next time you authenticate using that identity provider in 
-                any app that uses Globus, the data in your ID Token and shown by the Identities API and 
-                token introspection will be updated with the new information.</p>
+             <p>Your name, email address, and username come from this identity provider. (Your organization 
+                might also.) To correct this data, visit the website for the identity provider 
+                above, find your user profile, and make your changes there. The next time you authenticate
+                using that identity provider in any app that uses Globus, the data will be updated in Globus.</p>
 
-             <p class="note">XSEDE apps request XSEDE as the effective identity provider. When using
-                these apps, your name, email address, username, and organization come from your XSEDE 
-                user profile. (View your profile in the XSEDE user portal to compare them.)</p>
+             <p class="note"><b>Note regarding XSEDE apps:</b> XSEDE apps request XSEDE as the effective 
+                identity provider. When you use XSEDE apps, your name, email address, username, and 
+                organization come from your XSEDE user profile.</p>
 
              <p><a href="{{returnurl}}">Return to your data.</a></p>
           </div>

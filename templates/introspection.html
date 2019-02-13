@@ -17,24 +17,20 @@
            <pre>{{globusintrores}}</pre>
 
         <p>The <i>name</i>, <i>sub</i>, and <i>email</i> are the same as in your 
-           <a href="{{ url_for('index') }}">ID Token</a>. The <i>username</i> is constructed by
-           Globus; it is the username reported by the identity provider and the identity provider's 
-           primary domain. (Some services reuse usernames and/or allow users to change their usernames, 
-           so it is not guaranteed to remain the same for a given individual or never be reused. The 
-           sub field has those guarantees.) Although the username looks like an email address, 
-           it may or may not be a valid email address. Apps should use the email field instead.</p>
+           <a href="{{ url_for('index') }}">ID Token</a>. The <i>username</i> is the same as the
+           ID Token <i>preferred_username.</i></p> 
 
        <p class="note">Some identity providers&mdash;especially academic institutions and schools&mdash;report
            anonymized usernames to prevent misuse of your username. In the username field, you might 
            see a random string of numbers and letters instead of your actual username. The same string will 
            be used consistently every time you login.</p>
 
-        <p>Applications using the Globus Auth API may also request individuals' linked identities. This 
-           information is available via token introspection and it appears as an identity set.
-           (The values in the <i>identities_set</i> are the <i>sub</i> value of each linked identity.)
+        <p>Applications may request individuals' linked identities. This 
+           information is available via token introspection and it appears in the <i>identities_set</i>.
+           (Each value in the identities_set is the <i>sub</i> of one of your linked identities.)
            When you logged in, {{pagetitle}} requested access to your linked identities.</p>
 
-        <p>Applications using the Globus Auth API may also request details about how and when
+        <p>Applications may request details about how and when
            an individual authenticated with an identity provider. This information is available 
            via token introspection and it appears as <i>session_info</i>. The 
            <a href="{{ url_for('sessioninfo') }}">Session</a> panel in {{pagetitle}} explains this data.</p>

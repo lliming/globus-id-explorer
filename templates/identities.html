@@ -23,13 +23,13 @@
            <i>sub</i>.  The <i>username</i> is the same as the ID Token <i>preferred_username</i>.</p>
 
        <p class="note">Some identity providers&mdash;especially academic institutions and schools&mdash;report
-           anonymized usernames to prevent misuse of your username. In the preferred_username or username 
+           anonymized usernames to prevent misuse of your username. In the username 
            field, you might see a random string of numbers and letters     
            instead of your actual username. The same string will be used consistently every time     
            you login.</p>
 
-        <p>Applications using the Identities API may also request information about the identity 
-           providers for a given identity. This information is provided in the <i>included</i> section.
+        <p>Applications may also request information about the identity provider for an identity. This 
+           information is provided in the <i>included</i> section.
            ({{pagetitle}} requested this information.) For the identity provider, the <i>id</i> is a
            unique identifier that will never be used for a different identity provider. The 
            <i>name</i> and <i>short_name</i> are human-readable names for the identity provider.

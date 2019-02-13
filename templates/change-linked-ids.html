@@ -2,28 +2,27 @@
 {% block content %}
      <div class="content-middle">
           <div class="explanation">
-             <h2>Changing or correcting your identity data</h2>
+             <h2>Correcting your identity data</h2>
 
              <p>{{pagetitle}} obtains identity data from Globus. Globus obtains identity data
                 from the organizations you've logged in with or have linked in Globus. These
                 organizations are called <i>identity providers</i>.</p>
 
-             <p class="data">When you visited {{pagetitle}}, your effective identity 
-                provider was <b class="data">{{primaryidp}}</b>. Globus will always use the same effective
-                identity provider for this app, but other apps may request a different effective identity
-                provider. Your <b>UserInfo</b> also showed information from the following linked identity 
-                providers: <b class="data">{{idsetproviders}}</b>.</p>
+             <p class="data">When you visited {{pagetitle}}, your effective identity provider was 
+                <b class="data">{{primaryidp}}</b>.  Your <b>UserInfo</b> also showed information from 
+                the following linked identity providers: <b class="data">{{idsetproviders}}</b>.
+                Globus will always use the same effective identity provider for this app, but other apps 
+                may request a different effective identity provider.</p>
 
-             <p>The data shown in your <b>ID Token</b>, from <b>token introspection</b>, and from the 
-                <b>Identities API</b> mostly comes from the effective identity provider. <b>UserInfo</b> data
-                from a linked identity comes from the identity provider for that identity. To change or correct
-                any of this data, go to the relevant identity provider's website and change your user profile 
-                there. The next time you authenticate using that identity provider in any app that uses Globus, 
-                the data for that identity will be updated with the new information.</p>
+             <p>Each identity provider reports your name, email address, and username. (Some also
+                report your organization.) To correct the data reported by an identity provider, visit the 
+                identity provider's website, find your user profile, and make your changes there. The next 
+                time you authenticate using that identity provider in any app that uses Globus, the data 
+                will be updated in Globus.</p>
 
-             <p class="note">XSEDE applications request XSEDE as the primary identity provider. When using 
-                these applications, your name, email address, username, and organization come from 
-                your XSEDE user profile. (View your profile in the XSEDE user portal to compare them.)</p>
+             <p class="note"><b>Note regarding XSEDE apps:</b> XSEDE apps request XSEDE as the effective 
+                identity provider. When you use XSEDE apps, your name, email address, username, and 
+                organization come from your XSEDE user profile.</p>
 
              <p><a href="{{returnurl}}">Return to your data.</a></p>
           </div>
