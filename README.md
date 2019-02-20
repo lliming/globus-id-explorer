@@ -83,15 +83,14 @@ But in order to do it, you'll first need to register the app with Globus.
 ## Register with Globus
 All OIDC/OAuth2 apps must be registered with their authentication service. Follow the app registration instructions in the [Auth API Developer's Guide](https://docs.globus.org/api/auth/developer-guide/#register-app).
 
-In order to be consistent with the app's prompts, you should name the app "Display Your
-Auth Data." The scopes field should be
-``openid email profile urn:globus:auth:scope:auth.globus.org:view_identity_set``. (Note
-that you only have to type the first few letters and the field will find what you're
-looking for. The last scope is easiest to find by typing 'set'.) The most important
-field is the "Redirects" field. It must be set to your Web server's HTTPS address, plus
-``/auth/login`` on the end. The ``/auth`` corresponds to the app path you specified in
-the ``auth.conf`` file. The ``/login`` part is the login path defined in the app's code.
-On my server, it looks like this:
+By default, this app calls itself "Globus Identity Explorer." (You can change this name
+following the instructions below under "Complete app configuration.") Whatever name you
+intend to use, enter the same name here in your app's registration so that Globus's
+login/logout pages are consistent. You may leave the scopes field empty, as Globus doesn't 
+use this information.  The most important field is the "Redirects" field. It must be set to 
+your Web server's HTTPS address, plus ``/auth/login`` on the end. The ``/auth`` corresponds 
+to the app path you specified in the ``auth.conf`` file. The ``/login`` part is the login 
+path defined in the app's code.  On my server, it looks like this:
 ```
 https://home.leeandkristin.net/auth/login
 ```
@@ -112,17 +111,27 @@ get the data you need to complete configuring your app.
 Now that your app is registered with Globus, return to your installation directory and
 edit the ``globus_id_explorer.conf`` file.
 
-- First, change the ``SERVER_NAME=`` value to your Web server's HTTPS address, plus
-  ``/auth`` on the end. E.g., ``https://home.leeandkristin.net/auth``. (If you don't do
+- First, change the ``SERVER_NAME`` value to your Web server's fully-qualified domain
+  name, as seen by web browsers. E.g., ``home.leeandkristin.net``. (If you don't do
   this, your app won't respond to requests. It's important!)
+- Next, enter a long string of random characters for the ``SECRET_KEY`` value. This
+  is used to encrypt the user's session cookie, which contains their Globus access
+  tokens. It's important that you randomize this key.
 - Then, copy and paste the
   Client ID from your Web browser window (showing your app registration) into the line
   beginning with ``APP_CLIENT_ID``.  
-- Finally, in your Web browser, scroll to the bottom
+- In your Web browser, scroll to the bottom
   of your app registration and click ``Generate New Client Secret``. Enter a label for
   the client secret (it can be anything you like), and click ``Generate Secret``. Then
   copy and paste the secret character string into the line beginning with
-  ``APP_CLIENT_SECRET``.  Save the app's configuration file.
+  ``APP_CLIENT_SECRET``.
+- If you want to change the app's name, change the value of ``APP_DISPLAY_NAME``.
+  This is what the app calls itself. (This should be the same name that you registered
+  with Globus above.)
+- Finally, if you are using [XSEDE Web SSO](https://www.xsede.org/ecosystem/services/sso)
+  and you want this app to display the "Login with XSEDE" login button instead
+  of a generic login button, change the ``APP_LOGIN_TEMPLATE`` value as explained in the
+  configuration file comments.
 
 ## Try it out
 Now that your app has been installed and both the app and your Web server are
