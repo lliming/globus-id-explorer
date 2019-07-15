@@ -18,7 +18,7 @@
 
         <p>The data above can be interpreted as follows.</p>
 
-        <blockquote>{{authevents}}</blockquote>
+        <p class="data">{{authevents}}</p>
 
         <p>This information was obtained via
            <a href="{{ url_for('introspection') }}">token introspection</a> on your access token
@@ -40,6 +40,7 @@
            the <i>sub</i> (aka <i>id</i>) for the identity you authenticated to. The value has two
            items: <i>idp</i> is the Globus identifier for the identity provider you authenticated
            with, and <i>auth_time</i> is the time (in <a href="https://www.epochconverter.com/">Unix 
-           Epoch</a> format) when the authentication occurred.</p>
+           Epoch</a> format) when the authentication occurred. You can find the human-readable names 
+           for the <i>idp</i> and <i>sub</i> values on the UserInfo page.</p>
      </div>
 {% endblock %}
