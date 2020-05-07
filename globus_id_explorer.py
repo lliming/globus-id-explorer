@@ -29,7 +29,7 @@ def index():
     # display all this information on the web page
     return render_template('id-token.html',
          pagetitle=app.config['APP_DISPLAY_NAME'],
-         explanationurl=url_for('change_effective_id'),
+         explanationurl=url_for('change_linked_ids'),
          id_token=json.dumps(myoidc,indent=3),
          loginstat=loginstatus)
 
@@ -92,7 +92,7 @@ def introspection():
     # display all this information on the web page
     return render_template('introspection.html',
          pagetitle=app.config['APP_DISPLAY_NAME'],
-         explanationurl=url_for('change_effective_id'),
+         explanationurl=url_for('change_linked_ids'),
          globusintrores=json.dumps(ir,indent=3),
          loginstat=loginstatus)
 
