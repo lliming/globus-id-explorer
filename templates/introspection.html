@@ -25,10 +25,16 @@
            see a random string of numbers and letters instead of your actual username. The same string will 
            be used consistently every time you login.</p>
 
-        <p>Applications may request individuals' linked identities. This 
-           information is available via token introspection and it appears in the <i>identities_set</i>.
-           (Each value in the identities_set is the <i>sub</i> of one of your linked identities.)
-           When you logged in, {{pagetitle}} requested access to your linked identities.</p>
+        <p>Globus apps may request individuals' linked identities when performing token 
+           introspection. The app may request only the unique identifier (the <i>sub</i>) of each linked identity
+           or it may request the details of each identity. When you logged 
+           in, {{pagetitle}} requested both. The list of unique identifiers for your linked identities
+           appears in the <i>identity_set</i>. (The app can use Globus's 
+           <a href="{{ url_for('identities') }}">Identities API</a> to retrieve details about each identity 
+           using these identifiers.) The details of each linked identity appear in the 
+           <i>identity_set_detail</i>. This is the same data that appears in the
+           <a href="{{ url_for('index') }}">ID Token</a> and <a href="{{ url_for('userinfo') }}">UserInfo</a> 
+           results.</p>
 
         <p>Applications may request details about how and when
            an individual authenticated with an identity provider. This information is available 

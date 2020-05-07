@@ -9,25 +9,13 @@
                 <a class="inactive" href="{{ url_for('sessioninfo') }}">Session</a></p>
         </div>
 
-        <p>OpenID Connect apps can use the <b>UserInfo</b> interface to get more information about 
-           individuals.  Globus's UserInfo interface returns the following information about you. 
-           Explanations follow the data below. To learn how to correct this data, 
+        <p>OpenID Connect apps can use the <b>UserInfo</b> interface to get information about 
+           the authenticated individual. The data returned by the UserInfo interface is the same
+           as the <a href="{{ url_for('index') }}">ID Token</a>. Globus's UserInfo interface 
+           returns the following information about you.  To learn how to correct this data, 
            <a href="{{explanationurl}}">click here</a>.</p></p>
 
            <pre>{{oidcinfo}}</pre>
 
-        <p>The data returned by the UserInfo interface is the same as the 
-           <a href="{{ url_for('index') }}">ID Token</a> with the following addition.</p>
-
-        <p>Applications using the Globus Auth API may also request individuals' linked identities. This 
-           information is provided through the UserInfo interface and it appears as an <i>identity set</i>.
-           (When you logged in, {{pagetitle}} requested access to your linked identities.) In the identity_set, 
-           the preferred_username is replaced by username. The meaning is the same.</p>
-
-        <p class="note">Some identity providers&mdash;especially academic institutions and schools&mdash;report
-           anonymized usernames to prevent misuse of your username. In the preferred_username or username 
-           field, you might see a random string of numbers and letters     
-           instead of your actual username. The same string will be used consistently every time     
-           you login.</p>
      </div>
 {% endblock %}
