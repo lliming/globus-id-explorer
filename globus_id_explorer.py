@@ -109,6 +109,12 @@ def identities():
                                 pagetitle=app.config['APP_DISPLAY_NAME'],
                                 loginstat=loginstatus)
 
+    # Check to see if a specific identity was requested
+    if 'id' in request.args:
+        id = request.args.get('id')
+    else:
+        id = session.get('userid')
+
     # get the stored access token for the Auth API and use it to access the Auth API 
     # on the user's behalf
     auth_token = str(session.get('auth_token'))
@@ -116,17 +122,23 @@ def identities():
 
     try:
          # use Auth API to get more info about the authenticated user
-         myids = ac.get_identities(ids=str(session.get('userid')),include="identity_provider").data
+         myids = ac.get_identities(ids=str(id),include="identity_provider").data
     except GlobusAPIError:
          # if any of the above have issues, trash the session and start over
          session.clear()
          return redirect(url_for('index'))
+
+    # Now get the list of linked identities from the id_token in the session cache
+    # This is passed into the page template to allow the user to lookup any of the
+    # linked identities
+    linkedids = session.get('id_token')['identity_set']
 
     # display all this information on the web page
     return render_template('identities.html',
          pagetitle=app.config['APP_DISPLAY_NAME'],
          explanationurl=url_for('change_effective_id'),
          globusmyids=json.dumps(myids,indent=3),
+         linkedids=linkedids,
          loginstat=loginstatus)
 
 @app.route('/sessioninfo')
@@ -158,7 +170,9 @@ def sessioninfo():
          session.clear()
          return redirect(url_for('index'))
 
-    # get linked identities - this is used below to look up the identity provider's name.
+    # get linked identities - this is used below to look up the identity provider's name
+    # AND is passed into the page template to allow the user to add an authentication to
+    # the current session
     identities = ir['identity_set_detail']
 
     # use the session data to find out how the user authenticated
@@ -167,26 +181,12 @@ def sessioninfo():
     # pull the session information out of the introspection results
     sinfo = ir['session_info']
 
-    # create an HTML blob with options for adding new authentication events to the session
-    # note: the resulting HTML is a set of <tr> elements, each with two columns
-    #       the first column has the name of the IDP 
-    #       the second column has a username with a boost link (see /boost page for details)
-    boost_options = ''
-    for id in identities:
-         boost_options += '<tr><td>' 
-         boost_options += id['identity_provider_display_name']
-         boost_options += '</td><td><a href="'
-         boost_options += url_for('boost',id=id['sub'],idp=urllib.parse.quote(id['identity_provider_display_name']))
-         boost_options += '">' 
-         boost_options += id['username'] 
-         boost_options += '</a></td></tr>'
-
     # display all this information on the web page
     return render_template('session.html',
          pagetitle=app.config['APP_DISPLAY_NAME'],
          explanationurl=url_for('change_effective_id'),
          authevents=authevents,
-         boostopts=boost_options,
+         identities=identities,
          sessioninfo=json.dumps(sinfo,indent=3),
          loginstat=loginstatus)
 

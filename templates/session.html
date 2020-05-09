@@ -42,12 +42,17 @@
            for the <i>idp</i> and <i>sub</i> values on the 
            <a href="{{ url_for('introspection') }}">Introspection</a> page.</p>
 
-        <div class="note">
+        <div class="data">
            <p>To see how this data changes, use the links below to authenticate to one or more 
               of your identities within {{pagetitle}}. Logout to reset the session.</p>
 
-           <table class="bootoptions">
-           {{ boostopts|safe }}
+           <table class="boostoptions">
+           {% for id in identities %}
+             <tr>
+               <td>{{ id['identity_provider_display_name'] }}</td>
+               <td><a href="{{ url_for('boost',id=id['sub'],idp=id['identity_provider_display_name']) }}">{{ id['username'] }}</a></td>
+             </tr>
+           {% endfor %}
            </table>
         </div>
      </div>

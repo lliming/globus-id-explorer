@@ -37,5 +37,14 @@
            The <i>domains</i> list unique, machine-readable domains, used in identity usernames and 
            preferred_usernames, for which this identity provider is authoritative. This identity provider 
            is the only one that may issue identities in these domains.</p>
+
+        <div class="data">
+           <p>Click a link below to lookup one of your other identities.</p>
+           <ul>
+              {% for id in linkedids %}
+                 <li><a href="{{ url_for('identities',id=id['sub']) }}">{{ id['username'] }}</a></li>
+              {% endfor %}
+           </ul>
+        </div>
      </div>
 {% endblock %}
