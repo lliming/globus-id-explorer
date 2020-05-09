@@ -64,17 +64,16 @@
 
         <p>The <i>last_authentication</i> claim is the most recent time this individual authenticated this 
            identity in Globus. This time is encoded in <a href="https://www.epochconverter.com/">Unix Epoch</a> 
-           format.</p>
-
-        <p class="note">It is important to note that the authentication event reported in the 
-           last_authentication claim may have occured in a different application or web browser session.</p>
+           format. This authentication may have happened in a different application or web browser 
+           session.</p>
 
         <p>Globus ID Tokens also include the individuals' linked identities: identities the individual has
            linked in Globus. This information is provided in the <i>identity_set</i> claim. The value of
            this claim is a list of sets, where each set in the list contains the claims for a specific 
            linked identity. In the identity_set, the <i>preferred_username</i> claim is replaced by 
            <i>username</i>, but the meaning is the same. For each identity, the <i>last_authentication</i> 
-           claim is the most recent time this individual authenticated that identity in Globus.</p>
+           claim is the most recent time this individual authenticated that identity in Globus. This 
+           authentication may have happened in a different application or web browser session.</p>
 
      </div>
 {% endblock %}

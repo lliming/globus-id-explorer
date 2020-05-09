@@ -25,29 +25,25 @@
            see a random string of numbers and letters instead of your actual username. The same string will 
            be used consistently every time you login.</p>
 
-        <p>Globus apps may request individuals' linked identities when performing token 
-           introspection. The app may request only the unique identifier (the <i>sub</i>) of each linked identity
-           or it may request the details of each identity. When you logged 
-           in, {{pagetitle}} requested both. The list of unique identifiers for your linked identities
-           appears in the <i>identity_set</i>. (The app can use Globus's 
-           <a href="{{ url_for('identities') }}">Identities API</a> to retrieve details about each identity 
-           using these identifiers.) The details of each linked identity appear in the 
-           <i>identity_set_detail</i>. This is the same data that appears in the
-           <a href="{{ url_for('index') }}">ID Token</a> and <a href="{{ url_for('userinfo') }}">UserInfo</a> 
-           results.</p>
-
-        <p>Applications may request details about how and when
-           an individual authenticated with an identity provider. This information is available 
-           via token introspection and it appears as <i>session_info</i>. The 
-           <a href="{{ url_for('sessioninfo') }}">Session</a> panel in {{pagetitle}} explains this data.</p>
-
         <p>The <i>iss</i> (issuer) identifies Globus as the source of the access token. <i>iat</i>,
            <i>nbf</i>, and <i>exp</i> are times (in <a href="https://www.epochconverter.com/">Unix Epoch</a>
            format) when the token was created, when it becomes valid, and when it will expire.
            The <i>aud</i> (audience) identifies the service the token should be used with (Globus Auth API) and
            the app it was created for ({{pagetitle}}). The <i>client_id</i> also identifies the
            app that requested the token. The <i>scope</i> lists the actions the app may perform using 
-           this token: viewing your profile, your OpenID Connect data, your email address, and your 
-           linked identities.</p>
+           this token: view your profile, view your OpenID Connect data, and view your email address.</p>
+
+        <p>Globus apps may request individuals' linked identities. The app may either request only the unique 
+           identifiers for the linked identities or request the details of each identity.  ({{pagetitle}} 
+           requested both.) The list of unique identifiers for your linked identities appears in the 
+           <i>identity_set</i>. (The app can use Globus's <a href="{{ url_for('identities') }}">Identities API</a> 
+           to retrieve details about each identity using these identifiers.) The details of each linked identity 
+           appear in the <i>identity_set_detail</i>. This is the same data that appears in the
+           <a href="{{ url_for('index') }}">ID Token</a> and <a href="{{ url_for('userinfo') }}">UserInfo</a> 
+           results.</p>
+
+        <p>Globus apps may also request details about how and when an individual authenticated during the current
+           login session. This information appears as <i>session_info</i>. The 
+            <a href="{{ url_for('sessioninfo') }}">Session</a> panel in {{pagetitle}} explains this data.</p>
      </div>
 {% endblock %}

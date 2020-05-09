@@ -19,9 +19,9 @@ def index():
 
     # If not logged in, welcome and invite to login
     if not session.get('is_authenticated'):
+         loginstatus["loginlink"] = url_for('login',state='goto-index')
          return render_template(app.config['APP_LOGIN_TEMPLATE'],
                                 pagetitle=app.config['APP_DISPLAY_NAME'],
-                                loginurl=url_for('login'),
                                 loginstat=loginstatus)
 
     # get the stored OIDC id_token
@@ -41,9 +41,9 @@ def userinfo():
 
     # If not logged in, welcome and invite to login
     if not session.get('is_authenticated'):
+         loginstatus["loginlink"] = url_for('login',state='goto-userinfo')
          return render_template(app.config['APP_LOGIN_TEMPLATE'],
                                 pagetitle=app.config['APP_DISPLAY_NAME'],
-                                loginurl=url_for('login'),
                                 loginstat=loginstatus)
 
     # get the stored access token for the Auth API and use it
@@ -73,9 +73,9 @@ def introspection():
 
     # If not logged in, welcome and invite to login
     if not session.get('is_authenticated'):
+         loginstatus["loginlink"] = url_for('login',state='goto-introspection')
          return render_template(app.config['APP_LOGIN_TEMPLATE'],
                                 pagetitle=app.config['APP_DISPLAY_NAME'],
-                                loginurl=url_for('login'),
                                 loginstat=loginstatus)
 
     # get the stored access token for the Auth API
@@ -104,9 +104,9 @@ def identities():
 
     # If not logged in, welcome and invite to login
     if not session.get('is_authenticated'):
+         loginstatus["loginlink"] = url_for('login',state='goto-identities')
          return render_template(app.config['APP_LOGIN_TEMPLATE'],
                                 pagetitle=app.config['APP_DISPLAY_NAME'],
-                                loginurl=url_for('login'),
                                 loginstat=loginstatus)
 
     # get the stored access token for the Auth API and use it to access the Auth API 
@@ -136,9 +136,9 @@ def sessioninfo():
 
     # If not logged in, welcome and invite to login
     if not session.get('is_authenticated'):
+         loginstatus["loginlink"] = url_for('login',state='goto-sessioninfo')
          return render_template(app.config['APP_LOGIN_TEMPLATE'],
                                 pagetitle=app.config['APP_DISPLAY_NAME'],
-                                loginurl=url_for('login'),
                                 loginstat=loginstatus)
 
     # get the stored access token for the Auth API and use it to authorize access
@@ -213,6 +213,11 @@ def login():
     # Redirect out to Globus Auth
     if 'code' not in request.args:
         auth_uri = auth_client.oauth2_get_authorize_url()
+
+        # if there is a state parameter, pass it through without change
+        if 'state' in request.args:
+            auth_uri += '&state=' + request.args.get('state')
+
         return redirect(auth_uri)
 
     # If we do have a "code" param, we're coming back from Globus Auth
@@ -230,11 +235,13 @@ def login():
 
         # Set the initial page for the app
         initialpage = 'index'
-        # If there is a state parameter, then we may have been playing with the 
-        # session page feature and need to go there instead of the usual page.
+        # If there is a state parameter, then it might be a hint to go to a specific page
+        # in the interface when login completes. The name of the page will appear after
+        # the prefix "goto-". E.g., "goto-index" or "goto-sessioninfo"
         if 'state' in request.args:
-            if request.args.get('state') == 'gotosession':
-                initialpage = 'sessioninfo'
+            loc = request.args.get('state').find("goto-")
+            if loc == 0:
+                initialpage = request.args.get('state')[5:]
 
         # Update the session cookie and go to the initial app page, determined above
         session.update(
@@ -269,7 +276,7 @@ def boost():
     boost_string += '&session_required_identities=' + id
     boost_string += '&prompt=login'
     # add a state parameter to go straight to the session page when we come back to the app
-    boost_string += '&state=gotosession'
+    boost_string += '&state=goto-sessioninfo'
 
     # the redirect URI, as a complete URI (not relative path)
     redirect_uri = url_for('login', _external=True)
@@ -314,9 +321,9 @@ def change_linked_ids():
 
     # If not logged in, welcome and invite to login
     if not session.get('is_authenticated'):
+         loginstatus["loginlink"] = url_for('login',state='goto-change_linked_ids')
          return render_template(app.config['APP_LOGIN_TEMPLATE'],
                                 pagetitle=app.config['APP_DISPLAY_NAME'],
-                                loginurl=url_for('login'),
                                 loginstat=loginstatus)
 
     # get the id_token from session context
@@ -363,9 +370,9 @@ def change_effective_id():
 
     # If not logged in, welcome and invite to login
     if not session.get('is_authenticated'):
+         loginstatus["loginlink"] = url_for('login',state='goto-change_effective_id')
          return render_template(app.config['APP_LOGIN_TEMPLATE'],
                                 pagetitle=app.config['APP_DISPLAY_NAME'],
-                                loginurl=url_for('login'),
                                 loginstat=loginstatus)
 
     # get the id_token from session context

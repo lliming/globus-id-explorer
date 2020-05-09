@@ -9,11 +9,13 @@
                 <a class="inactive" href="{{ url_for('sessioninfo') }}">Session</a></p>
         </div>
 
-        <p>OpenID Connect apps can use the <b>UserInfo</b> interface to get information about 
-           the authenticated individual. The data returned by the UserInfo interface is the same
-           as the <a href="{{ url_for('index') }}">ID Token</a>. Globus's UserInfo interface 
-           returns the following information about you.  To learn how to correct this data, 
-           <a href="{{explanationurl}}">click here</a>.</p></p>
+        <p>If an OpenID Connect app loses track of the 
+           <a href="{{ url_for('index') }}">ID Token</a> after the login process completes, 
+           it can use the <b>UserInfo</b> interface to get information about the 
+           authenticated individual.
+           The data returned by the UserInfo interface is the same as the ID Token. 
+           Globus's UserInfo interface returns the following information about you.  To 
+           learn how to correct this data, <a href="{{explanationurl}}">click here</a>.</p>
 
            <pre>{{oidcinfo}}</pre>
 
