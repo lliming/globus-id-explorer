@@ -434,7 +434,8 @@ def get_auth_events(introspectdata,identities):
         for id in identities:
             if (id['identity_provider'] == authdata['idp']):
                  idp = id['identity_provider_display_name']
-        auth_events += 'You authenticated {} minutes ago with {}.<br>'.format(duration,idp)
+                 username = id['username']
+        auth_events += 'You authenticated {} minutes ago with {} ({}).<br>'.format(duration,idp,username)
     return auth_events
 
 # actually run the app if this is called as a script
