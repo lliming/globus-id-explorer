@@ -158,9 +158,7 @@ def sessioninfo():
          session.clear()
          return redirect(url_for('index'))
 
-    # get the UserInfo data with the identity_set included.
-    # this is used below to look up the identity provider's name.
-    #oidcinfo = ac.oauth2_userinfo()
+    # get linked identities - this is used below to look up the identity provider's name.
     identities = ir['identity_set_detail']
 
     # use the session data to find out how the user authenticated
@@ -170,7 +168,9 @@ def sessioninfo():
     sinfo = ir['session_info']
 
     # create an HTML blob with options for adding new authentication events to the session
-    # note: the resulting HTML is a set of <li> elements
+    # note: the resulting HTML is a set of <tr> elements, each with two columns
+    #       the first column has the name of the IDP 
+    #       the second column has a username with a boost link (see /boost page for details)
     boost_options = ''
     for id in identities:
          boost_options += '<tr><td>' 
