@@ -18,29 +18,37 @@
 
         <p>The data above can be interpreted as follows.</p>
 
-        <p class="data">{{authevents}}</p>
+        <p class="data">{{authevents|safe}}</p>
 
         <p>This information was obtained via
            <a href="{{ url_for('introspection') }}">token introspection</a> on your access token
            for the Globus Auth API. {{pagetitle}} specifically requested your session information 
-           in its introspection request.</p>
+           in its introspection request.  You might not 
+           have any authentication events in the current session if you were already logged 
+           in to Globus (or another app that uses Globus) when you visited {{pagetitle}} and 
+           single sign-on allowed you to login without re-authenticating.</p>
 
-        <p>The <i>authentications</i> data lists every time you authenticated with an identity
+        <p>The <i>session_id</i> is a unique identifier for the current login session.
+           The <i>authentications</i> data lists every time you authenticated with an identity
            provider during the current login session. A new login session is started whenever 
            you log into an app and there is no open session. The session closes when you close 
-           your web browser, log out of Globus Auth, or log into a different identity set. The 
-           <i>session_id</i> is a unique identifier for the current login session.</p>
-
-        <p>Because {{pagetitle}} never asks you to re-authenticate, you shouldn't have more than 
-           one authentication in this login session. <u>You might have zero</u>, however,
-           if you were already logged in to Globus (or another app that uses Globus) when you 
-           visited {{pagetitle}} and single sign-on allowed you to login without re-authenticating.</p>
+           your web browser, log out of Globus Auth, or log into a different identity set. 
 
         <p>Within the <i>authentications</i> section, each item has a key and a value. The key is
            the <i>sub</i> (aka <i>id</i>) for the identity you authenticated to. The value has two
            items: <i>idp</i> is the Globus identifier for the identity provider you authenticated
            with, and <i>auth_time</i> is the time (in <a href="https://www.epochconverter.com/">Unix 
            Epoch</a> format) when the authentication occurred. You can find the human-readable names 
-           for the <i>idp</i> and <i>sub</i> values on the UserInfo page.</p>
+           for the <i>idp</i> and <i>sub</i> values on the 
+           <a href="{{ url_for('introspection') }}">Introspection</a> page.</p>
+
+        <div class="note">
+           <p>To see how this data changes, use the links below to authenticate to one or more 
+              of your identities within {{pagetitle}}. Logout to reset the session.</p>
+
+           <table class="bootoptions">
+           {{ boostopts|safe }}
+           </table>
+        </div>
      </div>
 {% endblock %}

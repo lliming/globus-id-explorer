@@ -6,6 +6,7 @@ import globus_sdk
 from globus_sdk import (GlobusError,GlobusAPIError)
 import json
 import time
+import urllib.parse
 
 
 app = Flask(__name__)
@@ -148,27 +149,44 @@ def sessioninfo():
     try:
          # authenticate to Auth API AS AN APPLICATION and use it to introspect the token
          cc = load_app_client()
-         ir = cc.oauth2_token_introspect(auth_token,include='identities_set,session_info').data
-
-         # get the UserInfo data with the identity_set included.
-         # this is used below to look up the identity provider's name.
-         oidcinfo = ac.oauth2_userinfo()
-
-         # use the session data to find out how the user authenticated
-         authevents = get_auth_events(ir,oidcinfo)
-
-         # pull the session information out of the introspection results
-         sinfo = ir['session_info']
+         # we ask for session_info (duh) and for identity_set_detail to get linked identities
+         # the linked identities are for: (a) interpreting the authentication results, 
+         # and (b) offering to boost the session with additional authentications
+         ir = cc.oauth2_token_introspect(auth_token,include='identity_set_detail,session_info').data
     except GlobusAPIError:
          # if any of the above have issues, trash the session and start over
          session.clear()
          return redirect(url_for('index'))
+
+    # get the UserInfo data with the identity_set included.
+    # this is used below to look up the identity provider's name.
+    #oidcinfo = ac.oauth2_userinfo()
+    identities = ir['identity_set_detail']
+
+    # use the session data to find out how the user authenticated
+    authevents = get_auth_events(ir,identities)
+
+    # pull the session information out of the introspection results
+    sinfo = ir['session_info']
+
+    # create an HTML blob with options for adding new authentication events to the session
+    # note: the resulting HTML is a set of <li> elements
+    boost_options = ''
+    for id in identities:
+         boost_options += '<tr><td>' 
+         boost_options += id['identity_provider_display_name']
+         boost_options += '</td><td><a href="'
+         boost_options += url_for('boost',id=id['sub'],idp=urllib.parse.quote(id['identity_provider_display_name']))
+         boost_options += '">' 
+         boost_options += id['username'] 
+         boost_options += '</a></td></tr>'
 
     # display all this information on the web page
     return render_template('session.html',
          pagetitle=app.config['APP_DISPLAY_NAME'],
          explanationurl=url_for('change_effective_id'),
          authevents=authevents,
+         boostopts=boost_options,
          sessioninfo=json.dumps(sinfo,indent=3),
          loginstat=loginstatus)
 
@@ -196,6 +214,7 @@ def login():
     if 'code' not in request.args:
         auth_uri = auth_client.oauth2_get_authorize_url()
         return redirect(auth_uri)
+
     # If we do have a "code" param, we're coming back from Globus Auth
     # and can start the process of exchanging an auth code for a token.
     else:
@@ -209,6 +228,15 @@ def login():
         auth_token_data = tokens_response.by_resource_server['auth.globus.org']
         AUTH_TOKEN = auth_token_data['access_token']
 
+        # Set the initial page for the app
+        initialpage = 'index'
+        # If there is a state parameter, then we may have been playing with the 
+        # session page feature and need to go there instead of the usual page.
+        if 'state' in request.args:
+            if request.args.get('state') == 'gotosession':
+                initialpage = 'sessioninfo'
+
+        # Update the session cookie and go to the initial app page, determined above
         session.update(
                 auth_token=AUTH_TOKEN,
                 id_token=id_token,
@@ -217,7 +245,43 @@ def login():
                 fullname=id_token['name'],
                 is_authenticated=True
                 )
+        return redirect(url_for(initialpage))
+
+@app.route('/boost')
+def boost():
+    """
+    Boost the login session by authenticating with a linked identity.
+    The identity is specified in the id parameter.
+    The identity provider's display name is in the idp parameter.
+    """
+    # first, make sure we have the right parameters
+    if 'id' in request.args:
+        id = request.args.get('id')
+    else:
         return redirect(url_for('index'))
+    if 'idp' in request.args:
+        idp = request.args.get('idp')
+    else:
+        return redirect(url_for('index'))
+
+    # build the extra parameters to the authorize endpoint
+    boost_string = '&session_message=' + urllib.parse.quote('You chose to add an authentication event with ') + idp
+    boost_string += '&session_required_identities=' + id
+    boost_string += '&prompt=login'
+    # add a state parameter to go straight to the session page when we come back to the app
+    boost_string += '&state=gotosession'
+
+    # the redirect URI, as a complete URI (not relative path)
+    redirect_uri = url_for('login', _external=True)
+
+    # we are going to go through the oauth2 flow again!
+    auth_client = load_app_client()
+    auth_client.oauth2_start_flow(redirect_uri, 
+            requested_scopes='openid email profile')
+
+    # Redirect out to Globus Auth and add the boost parameters
+    auth_uri = auth_client.oauth2_get_authorize_url() + boost_string
+    return redirect(auth_uri)
 
 @app.route("/logout")
 def logout():
@@ -348,7 +412,7 @@ def get_login_status():
          loginstat["identity"] = str(session.get('identity'))
     return loginstat
 
-def get_auth_events(introspectdata,oidcinfo):
+def get_auth_events(introspectdata,identities):
     try:
         authns=introspectdata['session_info']['authentications']
     except:
@@ -367,10 +431,10 @@ def get_auth_events(introspectdata,oidcinfo):
         duration = int((timenow-authdata['auth_time'])/60)
         # Look up the IdP in the identity_set from the oidcinfo structure.
         idp = '(unknown)'
-        for id in oidcinfo.data['identity_set']:
+        for id in identities:
             if (id['identity_provider'] == authdata['idp']):
                  idp = id['identity_provider_display_name']
-        auth_events += 'You authenticated {} minutes ago with {}. '.format(duration,idp)
+        auth_events += 'You authenticated {} minutes ago with {}.<br>'.format(duration,idp)
     return auth_events
 
 # actually run the app if this is called as a script

@@ -216,6 +216,14 @@ hr {
 	font-size: 0.75em;
 }
 
+div.note {
+	background-color: #b2cee6;
+        border-radius: 0.5em;
+	padding: 0.5em 1em;
+	margin-left: 5em;
+	margin-right: 5em;
+	color: #000;
+}
 p.note {
 	background-color: #b2cee6;
         border-radius: 0.5em;
