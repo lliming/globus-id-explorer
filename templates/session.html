@@ -20,6 +20,10 @@
 
         <p class="data">{{authevents|safe}}</p>
 
+        <p class="note">The authentication data on this page is specific to this app ({{pagetitle}}),
+           on this device, and in this web browser session. Logging in to other apps or on other devices 
+           will not change this data. Try it!</p>
+
         <p>This information was obtained via
            <a href="{{ url_for('introspection') }}">token introspection</a> on your access token
            for the Globus Auth API. {{pagetitle}} specifically requested your session information 
