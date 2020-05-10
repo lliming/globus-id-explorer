@@ -46,14 +46,12 @@
            <p>To see how this data changes, use the links below to authenticate to one or more 
               of your identities within {{pagetitle}}. Logout to reset the session.</p>
 
-           <table class="boostoptions">
+           <ul class="boostoptions">
            {% for id in identities %}
-             <tr>
-               <td>{{ id['identity_provider_display_name'] }}</td>
-               <td><a href="{{ url_for('boost',id=id['sub'],idp=id['identity_provider_display_name']) }}">{{ id['username'] }}</a></td>
-             </tr>
+               <li><a href="{{ url_for('boost',id=id['sub'],idp=id['identity_provider_display_name']) }}">{{ id['identity_provider_display_name'] }} 
+                   ({{ id['username'] }})</a></li>
            {% endfor %}
-           </table>
+           </ul>
         </div>
      </div>
 {% endblock %}

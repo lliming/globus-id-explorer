@@ -12,7 +12,7 @@
         <p>Apps can use Globus's <b>Identities API</b> to retrieve information about an identity using
            either a <i>username</i> (<i>username</i>@<i>identity.provider</i>) or a <i>sub</i> 
            (aka <i>id</i>).  The Identities API returns the following information 
-           about the <i>sub</i> in your ID Token. Explanations follow the data below. To learn how to 
+           about your {{ id }} identity. Explanations follow the data below. To learn how to 
            correct this data, <a href="{{explanationurl}}">click here</a>.</p></p>
 
            <pre>{{globusmyids}}</pre>
@@ -42,7 +42,7 @@
            <p>Click a link below to lookup one of your other identities.</p>
            <ul>
               {% for id in linkedids %}
-                 <li><a href="{{ url_for('identities',id=id['sub']) }}">{{ id['username'] }}</a></li>
+                 <li><a href="{{ url_for('identities',id=id['username']) }}">{{ id['username'] }}</a></li>
               {% endfor %}
            </ul>
         </div>

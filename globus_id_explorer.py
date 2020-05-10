@@ -113,7 +113,7 @@ def identities():
     if 'id' in request.args:
         id = request.args.get('id')
     else:
-        id = session.get('userid')
+        id = str(loginstatus["identity"])
 
     # get the stored access token for the Auth API and use it to access the Auth API 
     # on the user's behalf
@@ -122,7 +122,7 @@ def identities():
 
     try:
          # use Auth API to get more info about the authenticated user
-         myids = ac.get_identities(ids=str(id),include="identity_provider").data
+         myids = ac.get_identities(usernames=id,include="identity_provider").data
     except GlobusAPIError:
          # if any of the above have issues, trash the session and start over
          session.clear()
@@ -137,6 +137,7 @@ def identities():
     return render_template('identities.html',
          pagetitle=app.config['APP_DISPLAY_NAME'],
          explanationurl=url_for('change_effective_id'),
+         id=id,
          globusmyids=json.dumps(myids,indent=3),
          linkedids=linkedids,
          loginstat=loginstatus)
