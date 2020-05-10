@@ -136,7 +136,7 @@ def identities():
     # display all this information on the web page
     return render_template('identities.html',
          pagetitle=app.config['APP_DISPLAY_NAME'],
-         explanationurl=url_for('change_effective_id'),
+         explanationurl=url_for('change_linked_ids'),
          id=id,
          globusmyids=json.dumps(myids,indent=3),
          linkedids=linkedids,
