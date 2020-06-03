@@ -40,7 +40,7 @@
            to retrieve details about each identity using these identifiers.) The details of each linked identity 
            appear in the <i>identity_set_detail</i>. This is the same data that appears in the
            <a href="{{ url_for('index') }}">ID Token</a> and <a href="{{ url_for('userinfo') }}">UserInfo</a> 
-           results.</p>
+           results, though introspection results may include updates that happened after you logged in.</p>
 
         <p>Globus apps may also request details about how and when an individual authenticated during the current
            login session. This information appears as <i>session_info</i>. The 

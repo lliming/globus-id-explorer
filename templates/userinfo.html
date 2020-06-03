@@ -13,7 +13,8 @@
            <a href="{{ url_for('index') }}">ID Token</a> after the login process completes, 
            it can use the <b>UserInfo</b> interface to get information about the 
            authenticated individual.
-           The data returned by the UserInfo interface is the same as the ID Token. 
+           The data returned by the UserInfo interface is the same as the ID Token, though
+           UserInfo results may include updates that have happened since you logged in.
            Globus's UserInfo interface returns the following information about you.  To 
            learn how to correct this data, <a href="{{explanationurl}}">click here</a>.</p>
 
