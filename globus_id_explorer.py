@@ -122,7 +122,7 @@ def identities():
 
     try:
          # use Auth API to get more info about the authenticated user
-         myids = ac.get_identities(usernames=id,include="identity_provider").data
+         myids = ac.get_identities(usernames=id,query_params={"include":"identity_provider"}).data
     except GlobusAPIError:
          # if any of the above have issues, trash the session and start over
          session.clear()
@@ -339,7 +339,7 @@ def change_linked_ids():
     # get the identity_set from oauth2_userinfo()
     try:
          # use Auth API to get more info about the authenticated user
-         myids = ac.get_identities(ids=str(session.get('userid')),include="identity_provider").data
+         myids = ac.get_identities(ids=str(session.get('userid'))).data
 
          # use Auth API to get the standard OIDC userinfo fields (like any OIDC client)
          oidcinfo = ac.oauth2_userinfo()
